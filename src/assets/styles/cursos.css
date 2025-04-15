@@ -1,0 +1,90 @@
+/* Estilização da página de cursos */
+.cursos-page {
+    padding: 40px 20px; /* Adiciona espaçamento interno */
+    text-align: center; /* centra o conteúdo */
+    max-width: 1200px; /* Define um limite de largura */
+    margin: 0 auto; /* centra a página */
+    background-color: white; /* cor de fundo secção cursos */
+}
+
+/* Grid para os cursos */
+.cursos-lista {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Mantém responsivo e define tamanho mínimo de 300px */
+    gap: 40px; /* Espaçamento entre os cartões */
+    padding: 20px; /* Espaçamento interno */
+    justify-content: center; /* centra os itens */
+    max-width: 1200px; /* Define um limite de largura para evitar excesso de espaço vazio */
+    margin: 0 auto; /* centra a grid na página */
+}
+
+/* Estilização do cartão de curso */
+.curso-card {
+    background-color: #fff; /* Fundo branco */
+    padding: 20px; /* Espaçamento interno */
+    border-radius: 10px; /* Bordas arredondadas */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Adiciona sombra para destacar o cartão */
+    text-align: center; /* Centraliza o texto */
+    transition: transform 0.3s ease-in-out; /* Efeito suave ao passar o mouse */
+    max-width: 350px; /* Define uma largura máxima para os cartões */
+    margin: 0 auto; /* Centraliza os cartões individualmente */
+}
+
+/* Efeito ao passar o mouse */
+.curso-card:hover {
+    transform: scale(1.05); /* Aumenta o tamanho ao passar o cursor por cima */
+}
+
+/* Estilização da imagem dentro do cartão */
+.curso-card img {
+    width: 100%; /* Ocupa toda a largura do container */
+    border-radius: 10px; /* Bordas arredondadas */
+}
+
+/* Estilização do título do curso */
+.curso-card h3 {
+    margin: 15px 0 10px; /* Espaçamento ao redor do título */
+    font-size: 18px; /* Tamanho da fonte */
+    color: #333; /* Cor do texto */
+}
+
+/* Estilização da descrição do curso */
+.curso-card p {
+    font-size: 14px; /* Tamanho da fonte menor */
+    color: #666; /* Cor do texto mais suave */
+    margin-bottom: 10px; /* Espaçamento inferior */
+}
+
+/* Botão de ação */
+.btn {
+    padding: 10px 15px; /* Espaçamento interno */
+    border: none; /* Remove a borda */
+    cursor: pointer; /* Indica que é clicável */
+    font-size: 14px; /* Tamanho da fonte */
+    border-radius: 5px; /* Bordas arredondadas */
+    transition: 0.3s; /* Efeito de transição ao passar o mouse */
+}
+
+/* Botão principal */
+.btn-primary {
+    background-color: #ffb400; /* Cor do fundo */
+    color: #fff; /* Cor do texto */
+}
+
+/* Efeito hover no botão principal */
+.btn-primary:hover {
+    background-color: #e09e00; /* Cor ao passar o mouse */
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+    .cursos-lista {
+        grid-template-columns: repeat(2, 1fr); /* 2 colunas em telas médias */
+    }
+}
+
+@media (max-width: 768px) {
+    .cursos-lista {
+        grid-template-columns: 1fr; /* Apenas uma coluna em telas pequenas */
+    }
+}
