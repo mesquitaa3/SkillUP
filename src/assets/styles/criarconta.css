@@ -1,95 +1,129 @@
-/* Estilos para a página Criar Conta */
+/* Reset */
+* {
+  box-sizing: border-box;
+}
+
 body, html {
-    height: 100%;
-    margin: 0;
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Garante que o footer sempre fique no final */
-  }
-  
-  .criar-conta-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex: 1; /* Isso faz o formulário ocupar o espaço restante entre a navbar e o footer */
-    background-color: #f4f7fc;
-    padding: 20px 0;
-  }
-  
-  .criar-conta-form {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-  }
-  
-  .criar-conta-form h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 1.5rem;
-    color: #333;
-  }
-  
-  .criar-conta-form input,
-  .criar-conta-form select,
-  .criar-conta-form button {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-  }
-  
-  .criar-conta-form input:focus,
-  .criar-conta-form select:focus,
-  .criar-conta-form button:focus {
-    outline: none;
-    border-color: #007bff;
-  }
-  
-  .criar-conta-form button {
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  
-  .criar-conta-form button:hover {
-    background-color: #0056b3;
-  }
-  
-  .criar-conta-form .cargo {
-    font-size: 0.95rem;
-    color: #666;
-    padding: 8px;
-  }
-  
-  .criar-conta-footer {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 0.9rem;
-    color: #777;
-  }
-  
-  .criar-conta-footer a {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  .criar-conta-footer a:hover {
-    text-decoration: underline;
-  }
-  
-  /* Para o footer normal */
-  footer {
-    background-color: #fff;
-    padding: 20px 0;
-    text-align: center;
-    color: #333;
-    margin-top: 20px;
-  }
-  
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Container geral com espaço entre conteúdo e footer */
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Centro da página */
+.criar-conta-container {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f4f7fc;
+  padding: 20px;
+}
+
+.criar-conta-form {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.criar-conta-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.criar-conta-form input,
+.criar-conta-form select,
+.criar-conta-form button {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.criar-conta-form input:focus,
+.criar-conta-form select:focus,
+.criar-conta-form button:focus {
+  outline: none;
+  border-color: #ffc107;
+}
+
+.criar-conta-form button {
+  background-color: #ffc107;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  border: none;
+}
+
+.criar-conta-form button:hover {
+  background-color: #e0a800;
+}
+
+.criar-conta-form .cargo {
+  font-size: 0.95rem;
+  color: #666;
+  padding: 8px;
+}
+
+.criar-conta-footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.criar-conta-footer a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.criar-conta-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Footer fixo ao fundo */
+footer {
+  background-color: #fff;
+  padding: 20px 0;
+  text-align: center;
+  color: #333;
+  flex-shrink: 0;
+}
+
+.login-link {
+  text-align: center;
+  font-size: 0.95rem;
+  margin-top: 15px;
+  color: #555;
+}
+
+.login-link a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}

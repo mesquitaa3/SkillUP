@@ -27,7 +27,7 @@ const Cursos = () => {
   return (
     <>
       <div className="cursos-page">
-        <h1>Todos os Cursos</h1>
+        <h1 className="h1cursos">Cursos</h1>
         <div className="cursos-lista">
           {cursos.map((curso) => (
             <div key={curso.id} className="curso-card">

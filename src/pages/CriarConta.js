@@ -65,6 +65,9 @@ const CriarConta = () => {
           <option value="instrutor">Instrutor</option>
         </select>
         <button type="submit">Criar Conta</button>
+        <p className="login-link">
+          Já tem conta? <a href="/Login">Faça o Login!</a>
+        </p>
       </form>
     </div>
   );

@@ -20,7 +20,7 @@ const PagAluno = () => {
 
   return (
     <div>
-      <h2>Bem-vindo à página do Aluno!</h2>
+      <h2>diogo</h2>
       {/* Conteúdo da página */}
     </div>
   );

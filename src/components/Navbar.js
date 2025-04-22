@@ -19,11 +19,11 @@ function Navbar() {
             <ul className={`nav-links ${menuOpen ? "active" : ""}`}>
                 <li><Link to="/">Home</Link></li>
                 <li><Link to="/Cursos">Cursos</Link></li>
-                <li><a href="#sobre">Sobre Nós</a></li>
+                <li><a href="/SobreNos">Sobre Nós</a></li>
             </ul>
             <div className="logo">SkillUP</div>
             <div className="auth-buttons">
-                <Link to="Login" className="btn btn-primary">Login</Link>
+                <Link to="/Login" className="btn btn-primary">Login</Link>
                 <Link to="/CriarConta" className="btn btn-outline">Registar</Link>
             </div>
         </nav>

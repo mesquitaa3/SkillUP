@@ -1,0 +1,39 @@
+.sobrenos-container {
+    display: flex;
+    justify-content: center;
+    padding: 50px 20px;
+    background-color: #f4f7fc;
+    min-height: 100vh;
+  }
+  
+  .sobrenos-content {
+    max-width: 800px;
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sobrenos-content h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .sobrenos-content h2 {
+    margin-top: 30px;
+    color: #ffb400;
+  }
+  
+  .sobrenos-content p,
+  .sobrenos-content li {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.6;
+  }
+  
+  .sobrenos-content ul {
+    padding-left: 20px;
+  }
+  
