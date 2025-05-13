@@ -21,7 +21,14 @@ const Login = () => {
     try {
       const response = await axios.post("http://localhost:3001/api/login", formData);
 
-      const { cargo } = response.data;
+      const { id, nome, email, cargo, data_criacao, instrutor_id } = response.data;
+
+      // Log para verificar os dados antes de armazenar
+      console.log("Dados do utilizador:", { id, nome, email, cargo, instrutor_id });
+
+      // Armazenar todos os dados no localStorage
+      const userData = { id, nome, email, cargo, data_criacao, instrutor_id };
+      localStorage.setItem("userData", JSON.stringify(userData));
 
       // Armazenar o cargo e o tempo de expiração
       localStorage.setItem("userRole", cargo);

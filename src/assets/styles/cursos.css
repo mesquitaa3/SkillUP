@@ -14,10 +14,6 @@
     margin: 0 auto;
     background-color: white;
 
-    /* Garante que a página pode crescer e rolar */
-    min-height: 100vh;
-    overflow-y: auto;
-    overflow-x: hidden;
 }
 
 /* Grid para os cursos */
@@ -101,3 +97,19 @@
         grid-template-columns: 1fr;
     }
 }
+
+
+.filtros {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .filtros input,
+  .filtros select {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }

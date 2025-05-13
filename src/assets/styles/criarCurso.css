@@ -1,0 +1,42 @@
+.criar-curso-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .criar-curso-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .criar-curso-form label {
+    font-weight: bold;
+  }
+  
+  .criar-curso-form input,
+  .criar-curso-form textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+  }
+  
+  .btn-submit {
+    padding: 12px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .btn-submit:hover {
+    background: #0056b3;
+  }
+
+  

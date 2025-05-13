@@ -1,0 +1,104 @@
+/* Pagamento.js - Estilos */
+.pagina-pagamento {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f4f9;
+    padding: 20px;
+  }
+  
+  .container-pagamento {
+    background-color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 30px;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .container-pagamento h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .container-pagamento h2 {
+    font-size: 2rem;
+    color: #444;
+    margin-bottom: 10px;
+  }
+  
+  .container-pagamento p {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+  }
+  
+  .container-pagamento .detalhes-curso {
+    background-color: #fafafa;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 30px;
+  }
+  
+  .container-pagamento .detalhes-curso p {
+    margin: 5px 0;
+  }
+  
+  .container-pagamento .preco {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #27ae60;
+    margin-bottom: 20px;
+  }
+  
+  .paypal-button-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .paypal-button-container .paypal-button {
+    width: 100%;
+    max-width: 300px;
+    padding: 10px;
+    border: none;
+    background-color: #0070ba;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .paypal-button-container .paypal-button:hover {
+    background-color: #005c8e;
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .container-pagamento {
+      padding: 20px;
+    }
+  
+    .container-pagamento h1 {
+      font-size: 2rem;
+    }
+  
+    .container-pagamento h2 {
+      font-size: 1.8rem;
+    }
+  
+    .container-pagamento .preco {
+      font-size: 1.3rem;
+    }
+  
+    .paypal-button-container .paypal-button {
+      width: 100%;
+      max-width: 260px;
+      font-size: 1rem;
+    }
+  }
+  
