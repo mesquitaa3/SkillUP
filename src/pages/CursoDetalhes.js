@@ -37,8 +37,10 @@ const CursoDetalhes = () => {
 
   return (
     <div className="curso-detalhes-container">
-      <h2>{curso.titulo}</h2>
-      <img src={curso.imagem || "https://placehold.co/400x200"} alt={curso.titulo} />
+      <h2 className="titulo-curso-detalhes">{curso.titulo}</h2>
+      <img className="img-curso-detalhes" src={curso.imagem
+                  ? `http://localhost:3001/uploads/${curso.imagem}`
+                  : "https://placehold.co/250x150"} alt={curso.titulo} />
       <p><strong>Descrição:</strong> {curso.descricao}</p>
       <p><strong>Duração:</strong> {curso.duracao}</p>
       <p><strong>Instrutor:</strong> {curso.instrutor_nome || "Desconhecido"}</p>

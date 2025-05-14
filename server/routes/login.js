@@ -65,13 +65,14 @@ router.post('/', async (req, res) => {
 
         // Alterando a correspondência dos ids
         res.json({
-          id: instrutor_id,  // O id que retorna é o id da tabela instrutores
+          id: user.id, // ✅ ID da tabela 'utilizadores', usado para updates
           nome: user.nome,
           email: user.email,
           cargo: user.cargo,
-          instrutor_id: user.id,  // O instrutor_id que retorna é o id da tabela utilizadores
+          instrutor_id: instrutor_id, // ✅ ID da tabela 'instrutores', usado para outras operações
           data_criacao: user.data_criacao
         });
+
       });
     } else {
       // Para outros cargos (por exemplo, aluno)

@@ -26,6 +26,8 @@ const CursosInstrutor = () => {
 
   const handleEditarCurso = (id) => navigate(`/instrutor/editar-curso/${id}`);
 
+  const handleVisualizarCurso = (id) => navigate(`/instrutor/visualizar-curso/${id}`);
+
   const handleDesativarCurso = async (id) => {
     if (window.confirm('Deseja desativar este curso?')) {
       await axios.put(`http://localhost:3001/api/instrutor/desativar-curso/${id}`);
@@ -73,6 +75,9 @@ const CursosInstrutor = () => {
                 <p>{curso.descricao}</p>
                 <p><strong>Duração:</strong> {curso.duracao}</p>
                 <div className="curso-actions">
+                  <button className="btn btn-primary" onClick={() => handleVisualizarCurso(curso.id)}>
+                    Visualizar
+                  </button>
                   <button className="btn btn-secondary" onClick={() => handleEditarCurso(curso.id)}>
                     Editar
                   </button>

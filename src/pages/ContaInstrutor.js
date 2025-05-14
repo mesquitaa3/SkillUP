@@ -1,9 +1,9 @@
-// ContaAluno.js
+// ContaInstrutor.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../assets/styles/conta.css';
 
-const ContaAluno = () => {
+const ContaInstrutor = () => {
   const [userData, setUserData] = useState({
     nome: '',
     email: '',
@@ -34,7 +34,7 @@ const ContaAluno = () => {
   const handleUpdate = async () => {
     try {
       const { email, novaPasse, id } = userData;
-      const response = await axios.put(`http://localhost:3001/api/aluno/${id}`, {
+      const response = await axios.put(`http://localhost:3001/api/instrutor/${id}`, {
         email,
         passe: novaPasse,
       });
@@ -51,7 +51,7 @@ const ContaAluno = () => {
   return (
       <div className="conta-wrapper">
     <div className="conta-container">
-      <h2>Conta do Aluno</h2>
+      <h2>Conta do Instrutor</h2>
       <form className="conta-form" onSubmit={(e) => { e.preventDefault(); handleUpdate(); }}>
         <div className="campo">
           <label>Nome:</label>
@@ -76,4 +76,4 @@ const ContaAluno = () => {
   );
 };
 
-export default ContaAluno;
+export default ContaInstrutor;

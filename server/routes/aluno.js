@@ -19,8 +19,9 @@ router.get('/:id', (req, res) => {
   const query = `
     SELECT u.id, u.nome, u.email, u.cargo, u.data_criacao
     FROM utilizadores u
-    JOIN aluno a ON a.id_utilizador = u.id
+    JOIN alunos a ON a.utilizador_id = u.id 
     WHERE u.id = ? AND u.cargo = 'aluno'
+
   `;
 
   db.query(query, [idUtilizador], (err, results) => {

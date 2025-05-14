@@ -2,6 +2,8 @@ const express = require("express");
 const mysql = require("mysql2");
 const multer = require("multer");
 const path = require("path");
+const bcrypt = require('bcrypt');
+
 
 const router = express.Router();
 
@@ -116,5 +118,133 @@ router.get("/:instrutorId/cursos", (req, res) => {
     }
   );
 });
+
+router.put('/desativar-curso/:id', (req, res) => {
+  const cursoId = req.params.id;
+  db.query('UPDATE cursos SET visivel = 0 WHERE id = ?', [cursoId], (err, result) => {
+    if (err) {
+      console.error('Erro ao desativar curso:', err);
+      return res.status(500).json({ erro: 'Erro ao desativar curso' });
+    }
+    res.json({ mensagem: 'Curso desativado com sucesso' });
+  });
+});
+
+router.put('/ativar-curso/:id', (req, res) => {
+  const cursoId = req.params.id;
+  db.query('UPDATE cursos SET visivel = 1 WHERE id = ?', [cursoId], (err, result) => {
+    if (err) {
+      console.error('Erro ao ativar curso:', err);
+      return res.status(500).json({ erro: 'Erro ao ativar curso' });
+    }
+    res.json({ mensagem: 'Curso ativado com sucesso' });
+  });
+});
+
+// Obter tarefas do curso
+router.get('/curso/:id/tarefas', (req, res) => {
+  const { id } = req.params;
+  db.query('SELECT * FROM tarefas WHERE curso_id = ?', [id], (err, result) => {
+    if (err) return res.status(500).send(err);
+    res.json(result);
+  });
+});
+
+// Adicionar tarefa com upload
+router.post('/curso/:id/tarefa', upload.single('ficheiro'), (req, res) => {
+  const { id } = req.params;
+  const { titulo, descricao } = req.body;
+  const ficheiro = req.file ? req.file.filename : null;
+
+  db.query(
+    'INSERT INTO tarefas (curso_id, titulo, descricao, ficheiro) VALUES (?, ?, ?, ?)',
+    [id, titulo, descricao, ficheiro],
+    (err, result) => {
+      if (err) return res.status(500).send(err);
+      res.json({ success: true, id: result.insertId });
+    }
+  );
+});
+
+router.get('/curso/:id', (req, res) => {
+  const { id } = req.params;
+  console.log("ID do curso recebido:", id); // <- ADICIONA ISTO
+
+  db.query('SELECT * FROM cursos WHERE id = ?', [id], (err, result) => {
+    if (err) return res.status(500).send(err);
+    res.json(result[0]); // se result[0] for undefined, pode ser o problema
+  });
+});
+
+
+
+
+// GET dados do instrutor pelo ID do utilizador
+router.get('/:id', (req, res) => {
+  const idUtilizador = req.params.id;
+
+  const query = `
+    SELECT u.id, u.nome, u.email, u.cargo, u.data_criacao
+    FROM utilizadores u
+    JOIN instrutores a ON a.utilizador_id = u.id 
+    WHERE u.id = ? AND u.cargo = 'instrutor'
+
+  `;
+
+  db.query(query, [idUtilizador], (err, results) => {
+    if (err) {
+      console.error('❌ Erro ao buscar dados do instrutor:', err);
+      return res.status(500).json({ error: 'Erro ao buscar os dados' });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ message: 'instrutor não encontrado' });
+    }
+
+    res.json(results[0]);
+  });
+});
+
+// Atualizar email e/ou palavra-passe do instrutor
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { email, passe } = req.body;
+
+  try {
+    let updateFields = [];
+    let values = [];
+
+    if (email) {
+      updateFields.push('email = ?');
+      values.push(email);
+    }
+
+    if (passe) {
+      const hashedPassword = await bcrypt.hash(passe, 10);
+      updateFields.push('passe = ?');
+      values.push(hashedPassword);
+    }
+
+    if (updateFields.length === 0) {
+      return res.status(400).json({ message: 'Nenhum campo para atualizar.' });
+    }
+
+    values.push(id);
+    const sql = `UPDATE utilizadores SET ${updateFields.join(', ')} WHERE id = ?`;
+
+    db.query(sql, values, (err, result) => {
+      if (err) {
+        console.error('Erro ao atualizar utilizador:', err);
+        return res.status(500).json({ message: 'Erro ao atualizar utilizador.' });
+      }
+      res.json({ message: 'Dados atualizados com sucesso.' });
+    });
+  } catch (error) {
+    console.error('Erro no servidor:', error);
+    res.status(500).json({ message: 'Erro interno do servidor.' });
+  }
+});
+
+
 
 module.exports = router;

@@ -23,6 +23,8 @@ import Pagamento from "./pages/Pagamento";  // Rota para a página de pagamento
 import CursosInstrutor from "./pages/CursosInstrutor";
 import CriarCurso from "./pages/CriarCurso";  // Página de criação de curso
 import EditarCurso from "./pages/EditarCurso";  // Página de edição de curso
+import ContaInstrutor from "./pages/ContaInstrutor";  // Página de conta do instrutor
+import VisualizarCursoInstrutor from "./pages/VisualizarCursoInstrutor";  // Página de visualização do curso
 import Logout from "./pages/Logout";
 import "./assets/styles/styles.css";
 
@@ -52,9 +54,11 @@ function App() {
           </Route>
           <Route path="/instrutor/*" element={<PrivateRoute role="instrutor"><LayoutInstrutor /></PrivateRoute>}>
             <Route path="" element={<PagInstrutor />} />  {/* Página principal do instrutor */}
+            <Route path="conta" element={<ContaInstrutor />} />
             <Route path="cursos" element={<CursosInstrutor />} />
             <Route path="criar-curso" element={<CriarCurso />} />
             <Route path="editar-curso/:id" element={<EditarCurso />} />  {/* Editar curso */}
+            <Route path="visualizar-curso/:id" element={<VisualizarCursoInstrutor />} />  {/* Visualizar curso */}
           </Route>
         </Routes>
 

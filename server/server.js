@@ -8,6 +8,8 @@ const registoRoute = require('./routes/registo');
 const loginRoute = require('./routes/login');
 const alunoRoute = require('./routes/aluno');
 const instrutorRoute = require('./routes/instrutor');
+const tarefasRoutes = require('./routes/tarefas');
+
 
 const app = express();
 
@@ -81,11 +83,40 @@ app.get('/api/instrutor/:id/cursos', (req, res) => {
   });
 });
 
+// Desativar curso (visivel = 0)
+app.put('/api/instrutor/desativar-curso/:id', (req, res) => {
+  const cursoId = req.params.id;
+  const query = 'UPDATE cursos SET visivel = 0 WHERE id = ?';
+
+  db.query(query, [cursoId], (err, result) => {
+    if (err) {
+      console.error('❌ Erro ao desativar curso:', err);
+      return res.status(500).json({ erro: 'Erro ao desativar curso' });
+    }
+    res.json({ mensagem: 'Curso desativado com sucesso' });
+  });
+});
+
+// Ativar curso (visivel = 1)
+app.put('/api/instrutor/ativar-curso/:id', (req, res) => {
+  const cursoId = req.params.id;
+  const query = 'UPDATE cursos SET visivel = 1 WHERE id = ?';
+
+  db.query(query, [cursoId], (err, result) => {
+    if (err) {
+      console.error('❌ Erro ao ativar curso:', err);
+      return res.status(500).json({ erro: 'Erro ao ativar curso' });
+    }
+    res.json({ mensagem: 'Curso ativado com sucesso' });
+  });
+});
+
 // Ativar rotas
 app.use('/api/registo', registoRoute);
 app.use('/api/login', loginRoute);
 app.use('/api/aluno', alunoRoute);
 app.use('/api/instrutor', instrutorRoute);
+app.use('/api', tarefasRoutes);
 
 // Iniciar o servidor
 const PORT = 3001;

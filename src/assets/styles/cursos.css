@@ -113,3 +113,52 @@
     border-radius: 8px;
     border: 1px solid #ccc;
   }
+
+.img-curso-detalhes{
+    width: 25%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.titulo-curso-detalhes{
+    font-size: 2rem;
+    color: black;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.curso-detalhes {
+  max-width: 600px;
+  margin: auto;
+  padding: 2rem;
+  border: 2px solid #ffd700;
+  border-radius: 12px;
+  background: #fffbea;
+}
+
+.tarefa-form {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tarefa-form input[type="text"],
+.tarefa-form textarea,
+.tarefa-form input[type="file"] {
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.tarefa-form button {
+  background-color: #ffcc00;
+  color: black;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
