@@ -25,6 +25,8 @@ import CriarCurso from "./pages/CriarCurso";  // Página de criação de curso
 import EditarCurso from "./pages/EditarCurso";  // Página de edição de curso
 import ContaInstrutor from "./pages/ContaInstrutor";  // Página de conta do instrutor
 import VisualizarCursoInstrutor from "./pages/VisualizarCursoInstrutor";  // Página de visualização do curso
+import CursoAlunoDetalhes from "./pages/CursoAlunoDetalhes";
+import CursosInscritosAluno from "./pages/CursosInscritoAluno";  // Página de cursos inscritos do aluno
 import Logout from "./pages/Logout";
 import "./assets/styles/styles.css";
 
@@ -51,6 +53,8 @@ function App() {
             <Route path="cursos" element={<CursosAluno />} />
             <Route path="cursos/:id" element={<CursoDetalhes />} />
             <Route path="pagamento" element={<Pagamento />} />
+            <Route path="curso-detalhes/:id" element={<CursoAlunoDetalhes />} />  {/* Detalhes do curso */}
+            <Route path="cursos-inscritos" element={<CursosInscritosAluno />} />
           </Route>
           <Route path="/instrutor/*" element={<PrivateRoute role="instrutor"><LayoutInstrutor /></PrivateRoute>}>
             <Route path="" element={<PagInstrutor />} />  {/* Página principal do instrutor */}

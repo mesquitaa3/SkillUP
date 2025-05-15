@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "../assets/styles/login.css"; // Importa o CSS
+import "../assets/styles/login.css";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -21,21 +21,33 @@ const Login = () => {
     try {
       const response = await axios.post("http://localhost:3001/api/login", formData);
 
-      const { id, nome, email, cargo, data_criacao, instrutor_id } = response.data;
+      const {
+        id,
+        nome,
+        email,
+        cargo,
+        data_criacao,
+        aluno_id,
+        instrutor_id
+      } = response.data;
 
-      // Log para verificar os dados antes de armazenar
-      console.log("Dados do utilizador:", { id, nome, email, cargo, instrutor_id });
+      // ✅ Guardar o ID específico do papel
+      if (cargo === "aluno" && aluno_id) {
+        localStorage.setItem("alunoId", aluno_id);
+      }
 
-      // Armazenar todos os dados no localStorage
-      const userData = { id, nome, email, cargo, data_criacao, instrutor_id };
+      if (cargo === "instrutor" && instrutor_id) {
+        localStorage.setItem("instrutorId", instrutor_id);
+      }
+
+      // ✅ Guardar dados gerais
+      const userData = { id, nome, email, cargo, data_criacao };
       localStorage.setItem("userData", JSON.stringify(userData));
-
-      // Armazenar o cargo e o tempo de expiração
       localStorage.setItem("userRole", cargo);
-      const expirationTime = new Date().getTime() + 15 * 60 * 1000; // 15 minutos
+      const expirationTime = new Date().getTime() + 15 * 60 * 1000;
       localStorage.setItem("sessionExpiration", expirationTime);
 
-      // Redirecionar com base no cargo
+      // ✅ Redirecionar para o painel correto
       if (cargo === "aluno") {
         navigate("/aluno");
       } else if (cargo === "instrutor") {
@@ -43,6 +55,7 @@ const Login = () => {
       } else {
         alert("Cargo não reconhecido.");
       }
+
     } catch (error) {
       console.error("Erro ao fazer login:", error);
       alert("Credenciais inválidas. Tente novamente.");

@@ -18,6 +18,7 @@ function NavbarAluno() {
       <ul className={`nav-links ${menuOpen ? "active" : ""}`}>
         <li><Link to="/aluno">Home</Link></li>
         <li><Link to="/aluno/cursos">Cursos</Link></li>
+        <li><Link to="/aluno/cursos-inscritos">Cursos Inscritos</Link></li>
       </ul>
       <div className="logo">SkillUP</div>
       <div className="auth-buttons">

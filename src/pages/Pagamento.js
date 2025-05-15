@@ -25,11 +25,30 @@ const Pagamento = () => {
   }, [cursoId]);
 
   const handleApprove = (data, actions) => {
-    actions.order.capture().then(function(details) {
-      alert(`Pagamento bem-sucedido! ${details.payer.name.given_name}`);
-      navigate('/aluno/cursos');  // Redireciona para a página de cursos do aluno
-    });
-  };
+  actions.order.capture().then(function (details) {
+    alert(`Pagamento bem-sucedido! ${details.payer.name.given_name}`);
+
+    // Simular ID do aluno autenticado (podes ajustar com o login real)
+    const alunoId = localStorage.getItem('alunoId'); // ou usa um contexto/login real
+
+    fetch(`http://localhost:3001/api/aluno/${alunoId}/inscrever`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ cursoId }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        alert(data.mensagem);
+        navigate('/aluno/cursos'); // Redireciona após inscrição
+      })
+      .catch(error => {
+        console.error('Erro ao registar inscrição:', error);
+      });
+  });
+};
+
 
   const formatarPreco = (preco) => {
     return new Intl.NumberFormat('pt-PT', {

@@ -260,6 +260,123 @@ router.delete("/curso/:cursoId/ficheiros/:ficheiroId", (req, res) => {
   });
 });
 
+router.get("/curso/:id/alunos", (req, res) => {
+  const cursoId = req.params.id;
+
+  const sql = `
+    SELECT u.id AS utilizador_id, u.nome, u.email, i.data_inscricao
+    FROM inscricoes i
+    JOIN alunos a ON a.id = i.id_aluno
+    JOIN utilizadores u ON u.id = a.utilizador_id
+    WHERE i.id_curso = ? AND i.estado_pagamento = 'pago'
+  `;
+
+  db.query(sql, [cursoId], (err, results) => {
+    if (err) {
+      console.error("Erro ao buscar alunos inscritos:", err);
+      return res.status(500).json({ erro: "Erro ao buscar alunos" });
+    }
+    res.json(results);
+  });
+});
+
+router.post("/tarefas/:id/exercicio", (req, res) => {
+  const idTarefa = req.params.id;
+  const { pergunta, opcoes } = req.body; // opcoes = [{ texto_opcao, correta }]
+
+  const sqlExercicio = "INSERT INTO exercicios (id_tarefa, pergunta, tipo) VALUES (?, ?, 'escolha_multipla')";
+
+  db.query(sqlExercicio, [idTarefa, pergunta], (err, result) => {
+    if (err) {
+      console.error("Erro ao criar exercício:", err);
+      return res.status(500).json({ erro: "Erro ao criar exercício" });
+    }
+
+    const idExercicio = result.insertId;
+
+    const valoresOpcoes = opcoes.map(op => [idExercicio, op.texto_opcao, op.correta ? 1 : 0]);
+
+    const sqlOpcoes = "INSERT INTO opcoes_exercicio (id_exercicio, texto_opcao, correta) VALUES ?";
+
+    db.query(sqlOpcoes, [valoresOpcoes], (err2) => {
+      if (err2) {
+        console.error("Erro ao guardar opções:", err2);
+        return res.status(500).json({ erro: "Erro ao guardar opções" });
+      }
+
+      res.json({ mensagem: "Exercício criado com sucesso" });
+    });
+  });
+});
+
+router.get("/tarefas/:id/exercicios", (req, res) => {
+  const tarefaId = req.params.id;
+
+  const sql = `
+    SELECT e.id AS exercicio_id, e.pergunta, o.id AS opcao_id, o.texto_opcao, o.correta
+    FROM exercicios e
+    JOIN opcoes_exercicio o ON o.id_exercicio = e.id
+    WHERE e.id_tarefa = ?
+    ORDER BY e.id, o.id
+  `;
+
+  db.query(sql, [tarefaId], (err, results) => {
+    if (err) {
+      console.error("Erro ao buscar exercícios:", err);
+      return res.status(500).json({ erro: "Erro ao buscar exercícios" });
+    }
+
+    const exercicios = [];
+    const mapa = {};
+
+    results.forEach(row => {
+      if (!mapa[row.exercicio_id]) {
+        mapa[row.exercicio_id] = {
+          id: row.exercicio_id,
+          pergunta: row.pergunta,
+          opcoes: []
+        };
+        exercicios.push(mapa[row.exercicio_id]);
+      }
+
+      mapa[row.exercicio_id].opcoes.push({
+        id: row.opcao_id,
+        texto_opcao: row.texto_opcao,
+        correta: row.correta
+      });
+    });
+
+    res.json(exercicios);
+  });
+});
+
+
+
+router.delete("/exercicios/:id", (req, res) => {
+  const id = req.params.id;
+
+  db.query("DELETE FROM opcoes_exercicio WHERE id_exercicio = ?", [id], err => {
+    if (err) {
+      console.error("Erro ao apagar opções:", err);
+      return res.status(500).json({ erro: "Erro ao apagar opções" });
+    }
+
+    db.query("DELETE FROM exercicios WHERE id = ?", [id], err2 => {
+      if (err2) {
+        console.error("Erro ao apagar exercício:", err2);
+        return res.status(500).json({ erro: "Erro ao apagar exercício" });
+      }
+
+      res.json({ mensagem: "Exercício apagado com sucesso" });
+    });
+  });
+});
+
+
+
+
+
+
 
 
 module.exports = router;

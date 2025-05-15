@@ -78,6 +78,121 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+// Inscrever aluno num curso (simular pós-pagamento)
+router.post('/:alunoId/inscrever', (req, res) => {
+  const { alunoId } = req.params;
+  const { cursoId } = req.body;
+
+  const sql = `
+    INSERT INTO inscricoes (id_aluno, id_curso, data_inscricao, estado_pagamento)
+    VALUES (?, ?, NOW(), 'pago')
+  `;
+
+  db.query(sql, [alunoId, cursoId], (err) => {
+    if (err) {
+      console.error('Erro ao inscrever aluno:', err);
+      return res.status(500).json({ erro: 'Erro ao inscrever aluno' });
+    }
+
+    res.json({ mensagem: 'Inscrição realizada com sucesso!' });
+  });
+});
+
+// GET /api/aluno/:id/inscricoes
+router.get("/aluno/:id/inscricoes", (req, res) => {
+  const alunoId = req.params.id;
+  const query = `
+    SELECT c.* FROM cursos c
+    JOIN inscricoes i ON i.id_curso = c.id
+    WHERE i.id_aluno = ?
+  `;
+  db.query(query, [alunoId], (err, results) => {
+    if (err) return res.status(500).json({ erro: "Erro ao buscar cursos" });
+    res.json(results);
+  });
+});
+
+// GET /api/aluno/:id/inscricoes
+router.get('/:id/inscricoes', (req, res) => {
+  const alunoId = req.params.id;
+
+  const query = `
+    SELECT c.*
+    FROM cursos c
+    INNER JOIN inscricoes i ON i.id_curso = c.id
+    WHERE i.id_aluno = ?
+  `;
+
+  db.query(query, [alunoId], (err, results) => {
+    if (err) {
+      console.error('❌ Erro ao buscar cursos inscritos:', err);
+      return res.status(500).json({ erro: 'Erro ao buscar cursos inscritos' });
+    }
+
+    res.json(results);
+  });
+});
+
+// GET /api/aluno/curso/:id?alunoId=...
+router.get('/curso/:id', (req, res) => {
+  const cursoId = req.params.id;
+  const alunoId = req.query.alunoId;
+
+  if (!alunoId) {
+    return res.status(400).json({ erro: "alunoId não fornecido." });
+  }
+
+  const verificarInscricao = `
+    SELECT * FROM inscricoes WHERE id_curso = ? AND id_aluno = ?
+  `;
+
+  const getCurso = `SELECT * FROM cursos WHERE id = ?`;
+  const getTarefas = `SELECT * FROM tarefas WHERE id_curso = ?`;
+  const getFicheiros = `SELECT * FROM ficheiros WHERE curso_id = ?`;
+
+  db.query(verificarInscricao, [cursoId, alunoId], (err, inscricoes) => {
+    if (err) {
+      console.error("Erro ao verificar inscrição:", err);
+      return res.status(500).json({ erro: "Erro ao verificar inscrição." });
+    }
+
+    if (inscricoes.length === 0) {
+      return res.status(403).json({ erro: "Aluno não está inscrito neste curso." });
+    }
+
+    db.query(getCurso, [cursoId], (err, cursoRes) => {
+      if (err) {
+        console.error("Erro ao buscar curso:", err);
+        return res.status(500).json({ erro: "Erro ao buscar curso." });
+      }
+
+      db.query(getTarefas, [cursoId], (err, tarefasRes) => {
+        if (err) {
+          console.error("Erro ao buscar tarefas:", err);
+          return res.status(500).json({ erro: "Erro ao buscar tarefas." });
+        }
+
+        db.query(getFicheiros, [cursoId], (err, ficheirosRes) => {
+          if (err) {
+            console.error("Erro ao buscar ficheiros:", err);
+            return res.status(500).json({ erro: "Erro ao buscar ficheiros." });
+          }
+
+          res.json({
+            curso: cursoRes[0],
+            tarefas: tarefasRes,
+            ficheiros: ficheirosRes
+          });
+        });
+      });
+    });
+  });
+});
+
+
+
+
+
 
 
 module.exports = router;

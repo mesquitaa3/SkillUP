@@ -9,9 +9,13 @@ const CursosInstrutor = () => {
   const navigate = useNavigate();
 
   const userData = JSON.parse(localStorage.getItem('userData'));
-  const instrutorId = userData?.instrutor_id;
+const instrutorId = localStorage.getItem("instrutorId");
 
   useEffect(() => {
+
+    console.log("👨‍🏫 userData:", userData);
+  console.log("📌 instrutorId:", instrutorId);
+
     if (!userData || userData.cargo !== 'instrutor') {
       navigate('/login');
       return;

@@ -1,4 +1,3 @@
-// route/login.js
 const express = require('express');
 const mysql = require('mysql2');
 const bcrypt = require('bcrypt');
@@ -43,39 +42,59 @@ router.post('/', async (req, res) => {
 
     // Se o utilizador for um instrutor
     if (user.cargo === 'instrutor') {
-      // Consultar a tabela instrutores para obter o instrutor_id (não o utilizador_id)
-      db.query('SELECT id FROM instrutores WHERE utilizador_id = ?', [user.id], (err, instrutorResults) => {
-        if (err) {
-          console.error('❌ Erro ao buscar instrutor_id:', err);
+      db.query('SELECT id FROM instrutores WHERE utilizador_id = ?', [user.id], (err2, instrutorResults) => {
+        if (err2) {
+          console.error('❌ Erro ao buscar instrutor_id:', err2);
           return res.status(500).json({ message: 'Erro ao buscar dados do instrutor' });
         }
 
-        console.log('🔎 Dados do instrutor encontrados:', instrutorResults);
-
-        // Verificar se encontramos o instrutor
         if (instrutorResults.length === 0) {
           console.log('⚠️ Nenhum instrutor encontrado para este utilizador');
           return res.status(404).json({ message: 'ID do instrutor não encontrado. Faz login novamente.' });
         }
 
-        const instrutor_id = instrutorResults[0].id; // Obtém o instrutor_id da tabela instrutores
+        const instrutor_id = instrutorResults[0].id;
 
-        // Sucesso no login, retornar todos os dados necessários
-        console.log('✅ Login bem-sucedido:', user.email);
+        console.log('✅ Login bem-sucedido (instrutor):', user.email);
 
-        // Alterando a correspondência dos ids
         res.json({
-          id: user.id, // ✅ ID da tabela 'utilizadores', usado para updates
+          id: user.id,
           nome: user.nome,
           email: user.email,
           cargo: user.cargo,
-          instrutor_id: instrutor_id, // ✅ ID da tabela 'instrutores', usado para outras operações
+          instrutor_id: instrutor_id,
           data_criacao: user.data_criacao
         });
-
       });
+
+    } else if (user.cargo === 'aluno') {
+      db.query('SELECT id FROM alunos WHERE utilizador_id = ?', [user.id], (err2, alunoResults) => {
+        if (err2) {
+          console.error('❌ Erro ao buscar aluno_id:', err2);
+          return res.status(500).json({ message: 'Erro ao buscar dados do aluno' });
+        }
+
+        if (alunoResults.length === 0) {
+          console.log('⚠️ Nenhum aluno encontrado para este utilizador');
+          return res.status(404).json({ message: 'ID do aluno não encontrado. Faz login novamente.' });
+        }
+
+        const aluno_id = alunoResults[0].id;
+
+        console.log('✅ Login bem-sucedido (aluno):', user.email);
+
+        res.json({
+          id: user.id,
+          nome: user.nome,
+          email: user.email,
+          cargo: user.cargo,
+          aluno_id: aluno_id,
+          data_criacao: user.data_criacao
+        });
+      });
+
     } else {
-      // Para outros cargos (por exemplo, aluno)
+      // Outro tipo de utilizador (caso não seja aluno nem instrutor)
       res.json({
         id: user.id,
         nome: user.nome,
