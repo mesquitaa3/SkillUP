@@ -25,7 +25,7 @@ const PagInstrutor = () => {
       return;
     }
 
-    // Buscar cursos criados por este instrutor
+    //Procurar cursos criados por este instrutor
     axios.get(`http://localhost:3001/api/instrutor/${instrutorId}/cursos`)
       .then(res => {
         setCursos(res.data);
@@ -38,7 +38,7 @@ const PagInstrutor = () => {
         setGraficoData(dadosGrafico);
       })
       .catch(err => {
-        console.error("Erro ao buscar cursos do instrutor:", err);
+        console.error("Erro ao procurar cursos do instrutor:", err);
       });
   }, [navigate]);
 

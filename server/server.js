@@ -8,7 +8,10 @@ const registoRoute = require('./routes/registo');
 const loginRoute = require('./routes/login');
 const alunoRoute = require('./routes/aluno');
 const instrutorRoute = require('./routes/instrutor');
-const tarefasRoutes = require('./routes/tarefas');
+const tarefaRoute = require('./routes/tarefa');
+const responderRoute = require('./routes/responder');
+const cursosRoute = require('./routes/cursos');
+
 
 
 const app = express();
@@ -116,7 +119,10 @@ app.use('/api/registo', registoRoute);
 app.use('/api/login', loginRoute);
 app.use('/api/aluno', alunoRoute);
 app.use('/api/instrutor', instrutorRoute);
-app.use('/api', tarefasRoutes);
+app.use('/api/tarefa', tarefaRoute);
+app.use('/api/responder', responderRoute);
+app.use('/api/cursos', cursosRoute);
+
 
 // Iniciar o servidor
 const PORT = 3001;

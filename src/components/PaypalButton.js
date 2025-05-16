@@ -6,7 +6,7 @@ const PaypalButton = ({ amount }) => {
   const handlePaymentSuccess = (details) => {
     console.log("Pagamento realizado com sucesso:", details);
     alert("Pagamento realizado com sucesso!");
-    // Aqui você pode redirecionar o usuário para outra página, por exemplo, uma página de confirmação.
+    
   };
 
   return (
@@ -17,7 +17,7 @@ const PaypalButton = ({ amount }) => {
           return actions.order.create({
             purchase_units: [{
               amount: {
-                value: amount, // Valor do pagamento
+                value: amount, //valor a pagar
               },
             }],
           });

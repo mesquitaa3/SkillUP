@@ -14,13 +14,13 @@ const Cursos = () => {
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Erro ao buscar os cursos:", error);
+        console.error("Erro ao procurar cursos:", error);
         setLoading(false);
       });
   }, []);
 
   if (loading) {
-    return <div>Carregando cursos...</div>;
+    return <div>A carregar os cursos...</div>;
   }
 
   return (
@@ -39,10 +39,11 @@ const Cursos = () => {
               className="curso-imagem"
             />
             <h3>{curso.titulo}</h3>
-            <p>{curso.descricao}</p>
+            <p><strong>Descrição:</strong> {curso.descricao}</p>
             <p>
-              <strong>Duração:</strong> {curso.duracao}
+              <strong>Duração: </strong> {curso.duracao} <strong>Horas</strong>
             </p>
+            <p> <strong>Preço: </strong> {curso.preco} <strong>€</strong></p>
             <button className="btn btn-primary">Ver mais</button>
           </div>
         ))}

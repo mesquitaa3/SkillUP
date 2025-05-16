@@ -18,15 +18,15 @@ const CursosInscritosAluno = () => {
     axios
       .get(`http://localhost:3001/api/aluno/${alunoId}/inscricoes`)
       .then((res) => setCursos(res.data))
-      .catch((err) => console.error("Erro ao buscar cursos inscritos:", err));
+      .catch((err) => console.error("Erro ao procurar cursos inscritos:", err));
   }, [alunoId, navigate]);
 
   return (
     <div className="cursos-page">
-      <h1 className="h1cursos">Meus Cursos</h1>
+      <h1 className="h1cursos">Os meus Cursos</h1>
 
       {cursos.length === 0 ? (
-        <p>Não estás inscrito em nenhum curso ainda.</p>
+        <p>Não estás inscrito em nenhum curso.</p>
       ) : (
         <div className="cursos-lista">
           {cursos.map((curso) => (

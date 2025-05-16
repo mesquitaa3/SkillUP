@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { PayPalButtons } from '@paypal/react-paypal-js';
-import '../assets/styles/pagamento.css';  // Importando o CSS
-import '../assets/styles/cursos.css';  // Importando o CSS global
+import '../assets/styles/pagamento.css'; 
+import '../assets/styles/cursos.css'; 
 
 const Pagamento = () => {
   const [curso, setCurso] = useState(null);
@@ -28,8 +28,8 @@ const Pagamento = () => {
   actions.order.capture().then(function (details) {
     alert(`Pagamento bem-sucedido! ${details.payer.name.given_name}`);
 
-    // Simular ID do aluno autenticado (podes ajustar com o login real)
-    const alunoId = localStorage.getItem('alunoId'); // ou usa um contexto/login real
+    //Simular ID do aluno autenticado (podes ajustar com o login real)
+    const alunoId = localStorage.getItem('alunoId'); //ou usa um contexto/login real
 
     fetch(`http://localhost:3001/api/aluno/${alunoId}/inscrever`, {
       method: 'POST',
@@ -41,7 +41,7 @@ const Pagamento = () => {
       .then(response => response.json())
       .then(data => {
         alert(data.mensagem);
-        navigate('/aluno/cursos'); // Redireciona após inscrição
+        navigate('/aluno/cursos'); //redirecionar após inscrição
       })
       .catch(error => {
         console.error('Erro ao registar inscrição:', error);
@@ -86,7 +86,7 @@ const Pagamento = () => {
             </div>
           </div>
         ) : (
-          <p>Carregando detalhes do curso...</p>
+          <p>Carregar detalhes do curso...</p>
         )}
       </div>
     </div>

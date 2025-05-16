@@ -18,7 +18,7 @@ const CursosAluno = () => {
         setCarregando(false);
       })
       .catch(err => {
-        console.error('Erro ao buscar cursos:', err);
+        console.error('Erro ao procurar cursos:', err);
         setCarregando(false);
       });
   }, []);
@@ -50,7 +50,7 @@ const CursosAluno = () => {
       </div>
 
       {carregando ? (
-        <p>Carregando cursos...</p>
+        <p>A carregar os cursos...</p>
       ) : (
         <div className="cursos-lista">
           {cursosFiltrados.map((curso) => {
@@ -67,6 +67,7 @@ const CursosAluno = () => {
                 <h3>{curso.titulo}</h3>
                 <p>{curso.descricao}</p>
                 <p><strong>Duração:</strong> {curso.duracao}</p>
+                <p><strong>Preço:</strong> {curso.preco} €</p>
                 <button
                   className="btn btn-primary"
                   onClick={() => navigate(`/aluno/cursos/${curso.id}`)}

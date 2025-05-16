@@ -12,7 +12,7 @@ const db = mysql.createConnection({
   port: 3307,
 });
 
-// GET dados do aluno pelo ID do utilizador
+//GET dados do aluno pelo ID do utilizador
 router.get('/:id', (req, res) => {
   const idUtilizador = req.params.id;
 
@@ -26,7 +26,7 @@ router.get('/:id', (req, res) => {
 
   db.query(query, [idUtilizador], (err, results) => {
     if (err) {
-      console.error('❌ Erro ao buscar dados do aluno:', err);
+      console.error('Erro ao buscar dados do aluno:', err);
       return res.status(500).json({ error: 'Erro ao buscar os dados' });
     }
 
@@ -38,7 +38,7 @@ router.get('/:id', (req, res) => {
   });
 });
 
-// Atualizar email e/ou palavra-passe do aluno
+//atualizar email e/ou palavra-passe do aluno
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const { email, passe } = req.body;
@@ -78,7 +78,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// Inscrever aluno num curso (simular pós-pagamento)
+//inscrever aluno num curso (simular pós-pagamento)
 router.post('/:alunoId/inscrever', (req, res) => {
   const { alunoId } = req.params;
   const { cursoId } = req.body;
@@ -125,7 +125,7 @@ router.get('/:id/inscricoes', (req, res) => {
 
   db.query(query, [alunoId], (err, results) => {
     if (err) {
-      console.error('❌ Erro ao buscar cursos inscritos:', err);
+      console.error('Erro ao buscar cursos inscritos:', err);
       return res.status(500).json({ erro: 'Erro ao buscar cursos inscritos' });
     }
 
@@ -134,6 +134,7 @@ router.get('/:id/inscricoes', (req, res) => {
 });
 
 // GET /api/aluno/curso/:id?alunoId=...
+
 router.get('/curso/:id', (req, res) => {
   const cursoId = req.params.id;
   const alunoId = req.query.alunoId;
@@ -146,7 +147,14 @@ router.get('/curso/:id', (req, res) => {
     SELECT * FROM inscricoes WHERE id_curso = ? AND id_aluno = ?
   `;
 
-  const getCurso = `SELECT * FROM cursos WHERE id = ?`;
+  const getCurso = `
+  SELECT c.*, u.nome AS nome_instrutor
+  FROM cursos c
+  JOIN instrutores i ON c.instrutor_id = i.id
+  JOIN utilizadores u ON i.utilizador_id = u.id
+  WHERE c.id = ?
+`;
+
   const getTarefas = `SELECT * FROM tarefas WHERE id_curso = ?`;
   const getFicheiros = `SELECT * FROM ficheiros WHERE curso_id = ?`;
 
@@ -157,7 +165,7 @@ router.get('/curso/:id', (req, res) => {
     }
 
     if (inscricoes.length === 0) {
-      return res.status(403).json({ erro: "Aluno não está inscrito neste curso." });
+      return res.status(403).json({ erro: "O aluno não está inscrito neste curso." });
     }
 
     db.query(getCurso, [cursoId], (err, cursoRes) => {

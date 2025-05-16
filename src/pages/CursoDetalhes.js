@@ -5,31 +5,31 @@ import axios from 'axios';
 import '../assets/styles/cursos.css';
 
 const CursoDetalhes = () => {
-  const { id } = useParams(); // Pega o ID do curso da URL
-  const [curso, setCurso] = useState(null); // Estado para armazenar os dados do curso
-  const [carregando, setCarregando] = useState(true); // Estado para indicar carregamento
-  const navigate = useNavigate(); // Função de navegação
+  const { id } = useParams();
+  const [curso, setCurso] = useState(null);
+  const [carregando, setCarregando] = useState(true);
+  const navigate = useNavigate();
 
-  // Carregar os detalhes do curso ao carregar a página
+  //carregar os detalhes do curso
   useEffect(() => {
     axios.get(`http://localhost:3001/api/cursos/${id}`)
       .then(res => {
-        setCurso(res.data); // Atualiza o estado com os dados do curso
-        setCarregando(false); // Fim do carregamento
+        setCurso(res.data);
+        setCarregando(false);
       })
       .catch(err => {
-        console.error('Erro ao buscar detalhes do curso:', err);
-        setCarregando(false); // Fim do carregamento, mesmo com erro
+        console.error('Erro ao procurar os detalhes do curso:', err);
+        setCarregando(false);
       });
-  }, [id]); // Reexecuta quando o ID do curso mudar
+  }, [id]);
 
-  // Se estiver carregando, exibe uma mensagem
+  //se os detalhes estiverem a carregar, exibe a seguinte mensagem
   if (carregando) return <p>A carregar...</p>;
 
-  // Se o curso não for encontrado, exibe uma mensagem de erro
+  //se o curso não for encontrado, exibe a seguinte mensagem
   if (!curso) return <p>Curso não encontrado.</p>;
 
-  // Função para redirecionar para a página de pagamento
+  //redirecionar para a pagina de pagamento
   const handleInscrever = () => {
     navigate(`/aluno/pagamento?cursoId=${id}`);
   };
@@ -44,9 +44,9 @@ const CursoDetalhes = () => {
       <p><strong>Descrição:</strong> {curso.descricao}</p>
       <p><strong>Duração:</strong> {curso.duracao}</p>
       <p><strong>Instrutor:</strong> {curso.instrutor_nome || "Desconhecido"}</p>
+      <p><strong>Preço:</strong> {curso.preco} €</p>
 
-      {/* Botão de inscrição que redireciona para a página de pagamento */}
-      <button className="btn btn-success" onClick={handleInscrever}>Inscrever</button>
+      <button className="btn btn-success" onClick={handleInscrever}>Inscrever no Curso</button>
     </div>
   );
 };

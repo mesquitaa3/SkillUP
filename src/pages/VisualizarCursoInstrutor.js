@@ -51,7 +51,7 @@ const [tarefaExercicios, setTarefaExercicios] = useState('');
         setNovaTarefa({ titulo: '', descricao: '' });
         carregarCurso();
       })
-      .catch(err => console.error("Erro ao adicionar tarefa:", err));
+      .catch(err => console.error("Erro ao criar tarefa:", err));
   };
 
   const handleEditarTarefa = (tarefaId) => {
@@ -93,7 +93,7 @@ const [tarefaExercicios, setTarefaExercicios] = useState('');
         setFicheiro(null);
         carregarCurso();
       })
-      .catch(err => console.error("Erro ao fazer upload:", err));
+      .catch(err => console.error("Erro ao fazer upload dos ficheiros:", err));
   };
 
   const handleApagarFicheiro = (ficheiroId) => {
@@ -159,10 +159,10 @@ const apagarExercicio = (exercicioId) => {
     <div className="visualizar-curso-container">
       <h2>{curso.titulo}</h2>
       <div className="tabs">
-        <button className={tab === 'detalhes' ? 'active' : ''} onClick={() => setTab('detalhes')}>📚 Detalhes</button>
-        <button className={tab === 'tarefas' ? 'active' : ''} onClick={() => setTab('tarefas')}>📝 Tarefas</button>
-        <button className={tab === 'ficheiros' ? 'active' : ''} onClick={() => setTab('ficheiros')}>📁 Ficheiros</button>
-        <button className={tab === 'alunos' ? 'active' : ''} onClick={() => setTab('alunos')}>👥 Alunos</button>
+        <button className={tab === 'detalhes' ? 'active' : ''} onClick={() => setTab('detalhes')}>Detalhes do Curso</button>
+        <button className={tab === 'tarefas' ? 'active' : ''} onClick={() => setTab('tarefas')}>Tarefas</button>
+        <button className={tab === 'ficheiros' ? 'active' : ''} onClick={() => setTab('ficheiros')}>Ficheiros</button>
+        <button className={tab === 'alunos' ? 'active' : ''} onClick={() => setTab('alunos')}>Alunos</button>
       </div>
 
       <div className="conteudo-tab">
@@ -173,14 +173,14 @@ const apagarExercicio = (exercicioId) => {
                 <input value={cursoEditado.titulo} onChange={e => setCursoEditado({ ...cursoEditado, titulo: e.target.value })} />
                 <input value={cursoEditado.duracao} onChange={e => setCursoEditado({ ...cursoEditado, duracao: e.target.value })} />
                 <textarea value={cursoEditado.descricao} onChange={e => setCursoEditado({ ...cursoEditado, descricao: e.target.value })} />
-                <button onClick={handleEditarCurso}>💾 Guardar</button>
+                <button onClick={handleEditarCurso}>Guardar</button>
                 <button onClick={() => setEditandoCurso(false)}>Cancelar</button>
               </div>
             ) : (
               <div>
                 <p><strong>Duração:</strong> {curso.duracao}</p>
                 <p><strong>Descrição:</strong> {curso.descricao}</p>
-                <button onClick={() => setEditandoCurso(true)}>✏️ Editar Curso</button>
+                <button onClick={() => setEditandoCurso(true)}>Editar Curso</button>
               </div>
             )}
           </div>
@@ -189,14 +189,14 @@ const apagarExercicio = (exercicioId) => {
         {tab === 'tarefas' && (
           <div>
             <div className="form-bloco">
-              <h3>➕ Nova Tarefa</h3>
+              <h3>Nova Tarefa</h3>
               <input type="text" placeholder="Título" value={novaTarefa.titulo} onChange={e => setNovaTarefa({ ...novaTarefa, titulo: e.target.value })} />
               <textarea placeholder="Descrição" value={novaTarefa.descricao} onChange={e => setNovaTarefa({ ...novaTarefa, descricao: e.target.value })} />
               <button onClick={handleAdicionarTarefa}>Adicionar Tarefa</button>
             </div>
 
             <div className="lista-bloco">
-              <h3>📋 Tarefas</h3>
+              <h3>Tarefas</h3>
               {tarefas.length === 0 ? <p>Sem tarefas ainda.</p> : (
                 <ul>
                   {tarefas.map(tarefa => (
@@ -205,7 +205,7 @@ const apagarExercicio = (exercicioId) => {
                         <div>
                           <input value={tarefaEditada.titulo} onChange={e => setTarefaEditada({ ...tarefaEditada, titulo: e.target.value })} />
                           <textarea value={tarefaEditada.descricao} onChange={e => setTarefaEditada({ ...tarefaEditada, descricao: e.target.value })} />
-                          <button onClick={() => handleEditarTarefa(tarefa.id)}>💾 Guardar</button>
+                          <button onClick={() => handleEditarTarefa(tarefa.id)}>Guardar</button>
                           <button onClick={() => setTarefaEditandoId(null)}>Cancelar</button>
                         </div>
                       ) : (
@@ -215,8 +215,8 @@ const apagarExercicio = (exercicioId) => {
                           <button onClick={() => {
                             setTarefaEditandoId(tarefa.id);
                             setTarefaEditada({ titulo: tarefa.titulo, descricao: tarefa.descricao });
-                          }}>✏️ Editar</button>
-                          <button onClick={() => handleApagarTarefa(tarefa.id)}>🗑️ Apagar</button>
+                          }}>Editar</button>
+                          <button onClick={() => handleApagarTarefa(tarefa.id)}>Apagar</button>
                         </div>
                       )}
                     </li>
@@ -226,7 +226,7 @@ const apagarExercicio = (exercicioId) => {
             </div>
 
             <div className="form-bloco">
-              <h3>➕ Criar Exercício</h3>
+              <h3>Criar Exercício</h3>
               <select value={tarefaSelecionada} onChange={e => setTarefaSelecionada(e.target.value)}>
                 <option value="">Escolher Tarefa</option>
                 {tarefas.map(tarefa => (
@@ -243,12 +243,12 @@ const apagarExercicio = (exercicioId) => {
                   {opcoes.length > 1 && <button onClick={() => removerOpcao(i)}>Remover</button>}
                 </div>
               ))}
-              <button onClick={adicionarOpcao}>➕ Adicionar Opção</button>
-              <button onClick={handleCriarExercicio}>💾 Guardar Exercício</button>
+              <button onClick={adicionarOpcao}>Adicionar Opção</button>
+              <button onClick={handleCriarExercicio}>Guardar Exercício</button>
             </div>
 
             <div className="form-bloco">
-  <h3>📋 Ver Exercícios</h3>
+  <h3>Ver Exercícios</h3>
   <select value={tarefaExercicios} onChange={e => carregarExercicios(e.target.value)}>
     <option value="">Escolher Tarefa</option>
     {tarefas.map(tarefa => (
@@ -268,7 +268,7 @@ const apagarExercicio = (exercicioId) => {
               </li>
             ))}
           </ul>
-          <button onClick={() => apagarExercicio(ex.id)}>🗑️ Apagar Exercício</button>
+          <button onClick={() => apagarExercicio(ex.id)}>Apagar Exercício</button>
         </li>
       ))}
     </ul>
@@ -281,7 +281,7 @@ const apagarExercicio = (exercicioId) => {
         {tab === 'ficheiros' && (
           <div>
             <div className="form-bloco">
-              <h3>📤 Upload de Ficheiro</h3>
+              <h3>Upload de Ficheiro</h3>
               <form onSubmit={handleUpload}>
                 <input type="file" onChange={e => setFicheiro(e.target.files[0])} />
                 <select value={tipoFicheiro} onChange={e => setTipoFicheiro(e.target.value)}>
@@ -301,13 +301,13 @@ const apagarExercicio = (exercicioId) => {
             </div>
 
             <div className="lista-bloco">
-              <h3>📄 Ficheiros</h3>
+              <h3>Ficheiros</h3>
               {ficheiros.length === 0 ? <p>Nenhum ficheiro enviado.</p> : (
                 <ul>
                   {ficheiros.map(f => (
                     <li key={f.id}>
-                      {f.tipo === 'curso' ? '📘 Curso' : '📝 Tarefa'} - {f.nome_ficheiro}
-                      <button onClick={() => handleApagarFicheiro(f.id)}>🗑️ Apagar</button>
+                      {f.tipo === 'curso' ? 'Curso' : 'Tarefa'} - {f.nome_ficheiro}
+                      <button onClick={() => handleApagarFicheiro(f.id)}>Apagar</button>
                     </li>
                   ))}
                 </ul>
@@ -318,8 +318,8 @@ const apagarExercicio = (exercicioId) => {
 
         {tab === 'alunos' && (
           <div className="lista-bloco">
-            <h3>👥 Alunos Inscritos</h3>
-            {alunos.length === 0 ? <p>Nenhum aluno inscrito ainda.</p> : (
+            <h3>Alunos Inscritos</h3>
+            {alunos.length === 0 ? <p>Nenhum aluno inscrito</p> : (
               <ul>
                 {alunos.map(aluno => (
                   <li key={aluno.utilizador_id}>

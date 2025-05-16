@@ -1,8 +1,8 @@
 // src/pages/CriarConta.js
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Importando useNavigate
-import "../assets/styles/criarconta.css"; // Importa o CSS
+import { useNavigate } from "react-router-dom";
+import "../assets/styles/criarconta.css";
 
 const CriarConta = () => {
   const [formData, setFormData] = useState({
@@ -12,7 +12,7 @@ const CriarConta = () => {
     cargo: "aluno",
   });
 
-  const navigate = useNavigate(); // Inicializando o useNavigate
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -24,7 +24,7 @@ const CriarConta = () => {
       await axios.post("http://localhost:3001/api/registo", formData);
       alert("Conta criada com sucesso!");
 
-      // Redirecionar para a página correta com base no cargo
+      //redirecionar para a página correta com base no cargo
       if (formData.cargo === "aluno") {
         navigate("/aluno");
       } else {

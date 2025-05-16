@@ -11,11 +11,11 @@ const EditarCurso = () => {
   const [imagem, setImagem] = useState('');
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState('');
-  const { id } = useParams();  // Obtém o ID do curso da URL
+  const { id } = useParams();  //obter o id do curso 
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Buscar o curso para edição
+    //procura o curso para editar
     axios.get(`http://localhost:3001/api/cursos/${id}`)
       .then(res => {
         const curso = res.data;
@@ -27,7 +27,7 @@ const EditarCurso = () => {
         setLoading(false);
       })
       .catch(err => {
-        console.error('Erro ao buscar curso:', err);
+        console.error('Erro ao procurar curso:', err);
         setErro('Erro ao carregar os dados do curso.');
         setLoading(false);
       });
@@ -42,7 +42,7 @@ const EditarCurso = () => {
       const response = await axios.put(`http://localhost:3001/api/instrutor/editar-curso/${id}`, cursoData);
       console.log('Curso atualizado com sucesso:', response.data);
       alert('Curso atualizado com sucesso!');
-      navigate('/instrutor/cursos');  // Redireciona para a lista de cursos
+      navigate('/instrutor/cursos');
     } catch (error) {
       console.error('Erro ao atualizar curso:', error);
       alert('Erro ao atualizar o curso.');
@@ -50,7 +50,7 @@ const EditarCurso = () => {
   };
 
   if (loading) {
-    return <p>Carregando curso...</p>;
+    return <p>A carregar curso...</p>;
   }
 
   return (

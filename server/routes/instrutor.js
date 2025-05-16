@@ -55,6 +55,35 @@ router.get("/cursos/:idInstrutor", (req, res) => {
   });
 });
 
+// POST /api/instrutor/criar-curso
+router.post('/criar-curso', upload.single('imagem'), (req, res) => {
+  const { titulo, descricao, duracao, preco, instrutor_id } = req.body;
+  const imagem = req.file?.filename || null;
+
+  if (!titulo || !descricao || !duracao || !preco || !instrutor_id) {
+    return res.status(400).json({ erro: "Campos obrigatórios em falta" });
+  }
+
+  const sql = `
+    INSERT INTO cursos (titulo, descricao, duracao, preco, imagem, instrutor_id, visivel)
+    VALUES (?, ?, ?, ?, ?, ?, 1)
+  `;
+
+  db.query(
+    sql,
+    [titulo, descricao, duracao, preco, imagem, instrutor_id],
+    (err, result) => {
+      if (err) {
+        console.error("Erro ao criar curso:", err);
+        return res.status(500).json({ erro: "Erro ao criar curso" });
+      }
+
+      res.json({ mensagem: "Curso criado com sucesso!", id: result.insertId });
+    }
+  );
+});
+
+
 // Obter curso completo (com tarefas e ficheiros)
 router.get("/curso/:id", (req, res) => {
   const cursoId = req.params.id;
@@ -165,12 +194,12 @@ router.get('/:id', (req, res) => {
 
   db.query(query, [idUtilizador], (err, results) => {
     if (err) {
-      console.error('❌ Erro ao buscar dados do instrutor:', err);
+      console.error('Erro ao buscar dados do instrutor:', err);
       return res.status(500).json({ error: 'Erro ao buscar os dados' });
     }
 
     if (results.length === 0) {
-      return res.status(404).json({ message: 'instrutor não encontrado' });
+      return res.status(404).json({ message: 'Instrutor não encontrado' });
     }
 
     res.json(results[0]);

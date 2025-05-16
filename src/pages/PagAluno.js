@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../assets/styles/aluno.css'; // Certifique-se de ter esse arquivo ou adaptar o estilo global
+import '../assets/styles/aluno.css';
 
 const PagAluno = () => {
   const navigate = useNavigate();

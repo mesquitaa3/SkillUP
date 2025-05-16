@@ -6,16 +6,16 @@ const Logout = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Apaga apenas os dados da sessão
+    //apaga os dados da sessão
     localStorage.removeItem("userData");
     localStorage.removeItem("userRole");
     localStorage.removeItem("sessionExpiration");
 
-    // Redireciona para login
+    //redireciona para a página de login
     navigate("/login");
   }, [navigate]);
 
-  return null; // Ou podes mostrar uma mensagem tipo "A terminar sessão..."
+  return null;
 };
 
 export default Logout;

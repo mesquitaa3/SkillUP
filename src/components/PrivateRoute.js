@@ -5,8 +5,8 @@ const PrivateRoute = ({ children, role }) => {
   useEffect(() => {
     const storedRole = localStorage.getItem('userRole');
     const sessionExpiration = localStorage.getItem('sessionExpiration');
-
-    // Verifica se o cargo não existe ou se a sessão expirou
+    
+    //verifica se o cargo existe, ou se a sessão expirou
     if (!storedRole || !sessionExpiration || new Date().getTime() > sessionExpiration) {
       localStorage.removeItem('userRole');
       localStorage.removeItem('sessionExpiration');

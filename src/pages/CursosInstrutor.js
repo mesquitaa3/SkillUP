@@ -9,12 +9,12 @@ const CursosInstrutor = () => {
   const navigate = useNavigate();
 
   const userData = JSON.parse(localStorage.getItem('userData'));
-const instrutorId = localStorage.getItem("instrutorId");
+  const instrutorId = localStorage.getItem("instrutorId");
 
   useEffect(() => {
 
-    console.log("👨‍🏫 userData:", userData);
-  console.log("📌 instrutorId:", instrutorId);
+    console.log("userData:", userData);
+    console.log("instrutorId:", instrutorId);
 
     if (!userData || userData.cargo !== 'instrutor') {
       navigate('/login');
@@ -40,8 +40,10 @@ const instrutorId = localStorage.getItem("instrutorId");
   };
 
   const handleAtivarCurso = async (id) => {
+    if (window.confirm('Deseja desativar este curso?')) {
     await axios.put(`http://localhost:3001/api/instrutor/ativar-curso/${id}`);
     setCursos(cursos.map(c => c.id === id ? { ...c, visivel: 1 } : c));
+    }
   };
 
   const cursosFiltrados = cursos.filter(curso =>
@@ -51,7 +53,7 @@ const instrutorId = localStorage.getItem("instrutorId");
   return (
     <div className="cursos-instrutor-container">
       <div className="cursos-header">
-        <h2>Meus Cursos</h2>
+        <h2>Os meus Cursos</h2>
         <div>
           <button className={`btn ${filtro === 'ativos' ? 'btn-primary' : 'btn-outline'}`} onClick={() => setFiltro('ativos')}>
             Ativos

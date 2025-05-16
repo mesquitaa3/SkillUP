@@ -20,10 +20,10 @@ const ContaAluno = () => {
         const parsedData = JSON.parse(storedUserData);
         setUserData({ ...parsedData, novaPasse: '' });
       } catch (error) {
-        console.error('Erro ao analisar os dados do usuário:', error);
+        console.error('Erro ao analisar os dados do utilizador:', error);
       }
     } else {
-      console.error('Nenhum dado de usuário encontrado no localStorage');
+      console.error('Nenhum dado do utilizador encontrado no localStorage');
     }
   }, []);
 
