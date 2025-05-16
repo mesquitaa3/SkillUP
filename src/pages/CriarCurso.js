@@ -1,6 +1,7 @@
-// src/pages/CriarCurso.js
 import React, { useState } from "react";
 import axios from "axios";
+import '../assets/styles/cursos.css';
+
 
 const CriarCurso = () => {
   const [titulo, setTitulo] = useState("");
@@ -46,8 +47,8 @@ const CriarCurso = () => {
         }
       );
 
-      alert("✅ Curso criado com sucesso!");
-      console.log("📦 Dados recebidos:", response.data);
+      alert("Curso criado com sucesso!");
+      console.log("Dados recebidos:", response.data);
 
       // Limpar campos
       setTitulo("");
@@ -56,15 +57,15 @@ const CriarCurso = () => {
       setPreco("");
       setImagem(null);
     } catch (error) {
-      console.error("❌ Erro ao criar curso:", error);
+      console.error("Erro ao criar curso:", error);
       alert("Erro ao criar curso. Tente novamente.");
     }
   };
 
   return (
-    <div className="criar-curso-container">
+    <div className="criar-curso-page">
       <h2>Criar Curso</h2>
-      <form onSubmit={handleSubmit} className="form-criar-curso">
+      <form onSubmit={handleSubmit} className="criar-curso-form">
         <input
           type="text"
           placeholder="Título do curso"

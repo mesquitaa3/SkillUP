@@ -96,3 +96,85 @@ li {
   border-radius: 6px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
+
+/* ===== Tabela de Cursos ===== */
+
+.pagina-instrutor {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.pagina-instrutor h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.secao-cursos {
+  margin-bottom: 2rem;
+}
+
+.tabela-cursos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.tabela-header,
+.tabela-linha {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 0.8fr; /* Mais espaço para "alunos inscritos" */
+  align-items: center;
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  gap: 0.5rem; /* 👈 adiciona espaçamento entre colunas */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.tabela-header {
+  background-color: #e9ecef;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.tabela-linha span {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.tabela-linha button {
+  padding: 6px 12px;
+  background-color: #0077cc;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.tabela-linha button:hover {
+  background-color: #005fa3;
+}
+
+.secao-grafico {
+  margin-top: 3rem;
+}
+
+@media (max-width: 768px) {
+  .tabela-header,
+  .tabela-linha {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .tabela-linha button {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+}
+

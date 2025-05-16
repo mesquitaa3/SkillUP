@@ -12,10 +12,6 @@ const CursosInstrutor = () => {
   const instrutorId = localStorage.getItem("instrutorId");
 
   useEffect(() => {
-
-    console.log("userData:", userData);
-    console.log("instrutorId:", instrutorId);
-
     if (!userData || userData.cargo !== 'instrutor') {
       navigate('/login');
       return;
@@ -27,9 +23,6 @@ const CursosInstrutor = () => {
   }, []);
 
   const handleAdicionarCurso = () => navigate('/instrutor/criar-curso');
-
-  const handleEditarCurso = (id) => navigate(`/instrutor/editar-curso/${id}`);
-
   const handleVisualizarCurso = (id) => navigate(`/instrutor/visualizar-curso/${id}`);
 
   const handleDesativarCurso = async (id) => {
@@ -40,9 +33,9 @@ const CursosInstrutor = () => {
   };
 
   const handleAtivarCurso = async (id) => {
-    if (window.confirm('Deseja desativar este curso?')) {
-    await axios.put(`http://localhost:3001/api/instrutor/ativar-curso/${id}`);
-    setCursos(cursos.map(c => c.id === id ? { ...c, visivel: 1 } : c));
+    if (window.confirm('Deseja ativar este curso?')) {
+      await axios.put(`http://localhost:3001/api/instrutor/ativar-curso/${id}`);
+      setCursos(cursos.map(c => c.id === id ? { ...c, visivel: 1 } : c));
     }
   };
 
@@ -51,10 +44,10 @@ const CursosInstrutor = () => {
   );
 
   return (
-    <div className="cursos-instrutor-container">
-      <div className="cursos-header">
-        <h2>Os meus Cursos</h2>
-        <div>
+    <div className="instrutor-cursos-container">
+      <div className="instrutor-cursos-header">
+        <h2 className="instrutor-cursos-title">Os Meus Cursos</h2>
+        <div className="instrutor-cursos-filtros">
           <button className={`btn ${filtro === 'ativos' ? 'btn-primary' : 'btn-outline'}`} onClick={() => setFiltro('ativos')}>
             Ativos
           </button>
@@ -68,7 +61,7 @@ const CursosInstrutor = () => {
       </div>
 
       {cursosFiltrados.length > 0 ? (
-        <div className="cursos-grid">
+        <div className="instrutor-cursos-grid">
           {cursosFiltrados.map(curso => {
             const imagemUrl = curso.imagem
               ? `http://localhost:3001/uploads/${curso.imagem}`
@@ -76,16 +69,13 @@ const CursosInstrutor = () => {
 
             return (
               <div key={curso.id} className="curso-card">
-                <img src={imagemUrl} alt={curso.titulo} />
+                <img src={imagemUrl} alt={curso.titulo} className="curso-imagem" />
                 <h3>{curso.titulo}</h3>
                 <p>{curso.descricao}</p>
-                <p><strong>Duração:</strong> {curso.duracao}</p>
+                <p><strong>Duração:</strong> {curso.duracao} <strong>Horas</strong></p>
                 <div className="curso-actions">
                   <button className="btn btn-primary" onClick={() => handleVisualizarCurso(curso.id)}>
                     Visualizar
-                  </button>
-                  <button className="btn btn-secondary" onClick={() => handleEditarCurso(curso.id)}>
-                    Editar
                   </button>
                   {curso.visivel === 1 ? (
                     <button className="btn btn-danger" onClick={() => handleDesativarCurso(curso.id)}>
@@ -102,7 +92,7 @@ const CursosInstrutor = () => {
           })}
         </div>
       ) : (
-        <p>Nenhum curso {filtro === 'ativos' ? 'ativo' : 'desativado'} encontrado.</p>
+        <p className="instrutor-sem-cursos">Nenhum curso {filtro === 'ativos' ? 'ativo' : 'desativado'} encontrado.</p>
       )}
     </div>
   );

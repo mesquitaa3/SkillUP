@@ -1,9 +1,8 @@
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
-const path = require('path'); // <-- Necessário para path absoluto
+const path = require('path');
 
-// Importar as rotas
 const registoRoute = require('./routes/registo');
 const loginRoute = require('./routes/login');
 const alunoRoute = require('./routes/aluno');
@@ -11,8 +10,6 @@ const instrutorRoute = require('./routes/instrutor');
 const tarefaRoute = require('./routes/tarefa');
 const responderRoute = require('./routes/responder');
 const cursosRoute = require('./routes/cursos');
-
-
 
 const app = express();
 
@@ -37,10 +34,12 @@ db.connect((err) => {
 app.use(cors());
 app.use(express.json());
 
-// ✅ NOVO: Servir a pasta uploads
+// Servir a pasta uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Rota para cursos (listar todos)
+// ❌ Removido: rota duplicada de cursos por instrutor
+
+// ✅ Deixa só a rota principal de cursos públicos
 app.get('/api/cursos', (req, res) => {
   const query = 'SELECT * FROM cursos';
   db.query(query, (err, results) => {
@@ -71,60 +70,16 @@ app.get('/api/cursos/:id', (req, res) => {
   });
 });
 
-// Cursos por instrutor
-app.get('/api/instrutor/:id/cursos', (req, res) => {
-  const instrutorId = req.params.id;
-  const query = 'SELECT * FROM cursos WHERE instrutor_id = ?';
-
-  db.query(query, [instrutorId], (err, results) => {
-    if (err) {
-      console.error('❌ Erro ao buscar cursos do instrutor:', err);
-      return res.status(500).json({ erro: 'Erro ao buscar cursos do instrutor' });
-    }
-
-    res.json(results);
-  });
-});
-
-// Desativar curso (visivel = 0)
-app.put('/api/instrutor/desativar-curso/:id', (req, res) => {
-  const cursoId = req.params.id;
-  const query = 'UPDATE cursos SET visivel = 0 WHERE id = ?';
-
-  db.query(query, [cursoId], (err, result) => {
-    if (err) {
-      console.error('❌ Erro ao desativar curso:', err);
-      return res.status(500).json({ erro: 'Erro ao desativar curso' });
-    }
-    res.json({ mensagem: 'Curso desativado com sucesso' });
-  });
-});
-
-// Ativar curso (visivel = 1)
-app.put('/api/instrutor/ativar-curso/:id', (req, res) => {
-  const cursoId = req.params.id;
-  const query = 'UPDATE cursos SET visivel = 1 WHERE id = ?';
-
-  db.query(query, [cursoId], (err, result) => {
-    if (err) {
-      console.error('❌ Erro ao ativar curso:', err);
-      return res.status(500).json({ erro: 'Erro ao ativar curso' });
-    }
-    res.json({ mensagem: 'Curso ativado com sucesso' });
-  });
-});
-
-// Ativar rotas
+// ✅ Ativar rotas principais
 app.use('/api/registo', registoRoute);
 app.use('/api/login', loginRoute);
 app.use('/api/aluno', alunoRoute);
-app.use('/api/instrutor', instrutorRoute);
+app.use('/api/instrutor', instrutorRoute); // agora esta rota contém /:id/cursos
 app.use('/api/tarefa', tarefaRoute);
 app.use('/api/responder', responderRoute);
 app.use('/api/cursos', cursosRoute);
 
-
-// Iniciar o servidor
+// Iniciar servidor
 const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);

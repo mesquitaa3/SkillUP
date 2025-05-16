@@ -12,48 +12,39 @@ const Login = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post("http://localhost:3001/api/login", formData);
-      const {
-        id, nome, email, cargo, data_criacao, aluno_id, instrutor_id
-      } = response.data;
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const response = await axios.post("http://localhost:3001/api/login", formData);
+    const {
+      id, nome, email, cargo, data_criacao, aluno_id, instrutor_id
+    } = response.data;
 
-      
-      const userData = {
-        id,
-        nome,
-        email,
-        cargo,
-        data_criacao,
-        aluno_id: aluno_id || null,
-        instrutor_id: instrutor_id || null
-      };
+    const expirationTime = new Date().getTime() + 15 * 60 * 1000;
+    localStorage.setItem("sessionExpiration", expirationTime);
+    localStorage.setItem("userId", id);
+    localStorage.setItem("userRole", cargo);
+    localStorage.setItem("alunoId", aluno_id || "");
+    localStorage.setItem("instrutorId", instrutor_id || ""); // ✅ aqui está a correção
 
-      //guardar dados no localStorage
-      localStorage.setItem("userData", JSON.stringify(userData));
-      localStorage.setItem("userRole", cargo);
-      localStorage.setItem("alunoId", aluno_id || "");
-      localStorage.setItem("instrutorId", instrutor_id || "");
+    localStorage.setItem("userData", JSON.stringify({
+      id, nome, email, cargo, data_criacao, aluno_id, instrutor_id
+    }));
 
-      const expirationTime = new Date().getTime() + 15 * 60 * 1000;
-      localStorage.setItem("sessionExpiration", expirationTime);
-
-      //redirecionar para a página correta com base no cargo
-      if (cargo === "aluno") {
-        navigate("/aluno");
-      } else if (cargo === "instrutor") {
-        navigate("/instrutor");
-      } else {
-        alert("Cargo não reconhecido.");
-      }
-
-    } catch (error) {
-      console.error("Erro ao fazer login:", error);
-      alert("Credenciais inválidas. Tente novamente.");
+    if (cargo === "instrutor") {
+      navigate("/instrutor");
+    } else if (cargo === "aluno") {
+      navigate("/aluno");
+    } else {
+      alert("Cargo não reconhecido.");
     }
-  };
+
+  } catch (error) {
+    console.error("Erro ao fazer login:", error);
+    alert("Credenciais inválidas. Tente novamente.");
+  }
+};
+
 
   return (
     <div className="main-login-content">

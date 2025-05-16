@@ -12,7 +12,8 @@ const PagInstrutor = () => {
   useEffect(() => {
     const role = localStorage.getItem('userRole');
     const sessionExpiration = localStorage.getItem('sessionExpiration');
-    const instrutorId = localStorage.getItem('userId');
+    const instrutorId = localStorage.getItem("instrutorId");
+    console.log("🔍 ID do instrutor usado na dashboard:", instrutorId);
 
     if (!role || !sessionExpiration || new Date().getTime() > sessionExpiration) {
       localStorage.clear();
@@ -25,12 +26,10 @@ const PagInstrutor = () => {
       return;
     }
 
-    //Procurar cursos criados por este instrutor
-    axios.get(`http://localhost:3001/api/instrutor/${instrutorId}/cursos`)
+      axios.get(`http://localhost:3001/api/instrutor/${instrutorId}/cursos`)
       .then(res => {
+        console.log("Cursos recebidos:", res.data); // <-- isto
         setCursos(res.data);
-
-        // Criar dados para gráfico
         const dadosGrafico = res.data.map(curso => ({
           nome: curso.titulo,
           alunos: curso.total_alunos || 0,
@@ -42,6 +41,8 @@ const PagInstrutor = () => {
       });
   }, [navigate]);
 
+  const handleVerCurso = (id) => { navigate(`/instrutor/visualizar-curso/${id}`); };
+
   return (
     <div className="pagina-instrutor">
       <h1>Dashboard do Instrutor</h1>
@@ -51,30 +52,21 @@ const PagInstrutor = () => {
         {cursos.length === 0 ? (
           <p>Nenhum curso encontrado.</p>
         ) : (
-          <ul className="lista-cursos">
+          <div className="tabela-cursos">
+            <div className="tabela-header">
+              <span>Título</span>
+              <span>Alunos Inscritos</span>
+              <span>Ações</span>
+            </div>
             {cursos.map(curso => (
-              <li key={curso.id}>
-                <h3>{curso.titulo}</h3>
-                <p><strong>Descrição:</strong> {curso.descricao}</p>
-                <p><strong>Duração:</strong> {curso.duracao}</p>
-                <p><strong>Alunos inscritos:</strong> {curso.total_alunos || 0}</p>
-              </li>
+              <div key={curso.id} className="tabela-linha">
+                <span>{curso.titulo}</span>
+                <span>{curso.total_alunos || 0}</span>
+                <button onClick={() => handleVerCurso(curso.id)}>Ver</button>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
-      </section>
-
-      <section className="secao-grafico">
-        <h2>Alunos por Curso</h2>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={graficoData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="nome" />
-            <YAxis allowDecimals={false} />
-            <Tooltip />
-            <Bar dataKey="alunos" fill="#4CAF50" />
-          </BarChart>
-        </ResponsiveContainer>
       </section>
     </div>
   );

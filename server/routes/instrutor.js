@@ -6,8 +6,6 @@ const fs = require("fs");
 const mysql = require('mysql2');
 const bcrypt = require('bcrypt');
 
-
-
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -33,7 +31,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Configuração específica para ficheiros associados a tarefas
 const storageFicheiros = multer.diskStorage({
   destination: (req, file, cb) => cb(null, ficheirosPath),
   filename: (req, file, cb) => {
@@ -43,9 +40,9 @@ const storageFicheiros = multer.diskStorage({
 });
 const uploadFicheiros = multer({ storage: storageFicheiros });
 
-// Obter cursos do instrutor
-router.get("/cursos/:idInstrutor", (req, res) => {
-  const instrutorId = req.params.idInstrutor;
+// ✅ Obter cursos do instrutor (funciona com /api/instrutor/:id/cursos)
+router.get("/:id/cursos", (req, res) => {
+  const instrutorId = req.params.id;
   db.query("SELECT * FROM cursos WHERE instrutor_id = ?", [instrutorId], (err, results) => {
     if (err) {
       console.error("Erro ao obter cursos:", err);
@@ -55,7 +52,6 @@ router.get("/cursos/:idInstrutor", (req, res) => {
   });
 });
 
-// POST /api/instrutor/criar-curso
 router.post('/criar-curso', upload.single('imagem'), (req, res) => {
   const { titulo, descricao, duracao, preco, instrutor_id } = req.body;
   const imagem = req.file?.filename || null;
@@ -83,8 +79,6 @@ router.post('/criar-curso', upload.single('imagem'), (req, res) => {
   );
 });
 
-
-// Obter curso completo (com tarefas e ficheiros)
 router.get("/curso/:id", (req, res) => {
   const cursoId = req.params.id;
 
@@ -101,7 +95,7 @@ router.get("/curso/:id", (req, res) => {
         err ? reject(err) : resolve(results);
       });
     });
-    
+
   const getFicheiros = () =>
     new Promise((resolve, reject) =>
       db.query("SELECT * FROM ficheiros WHERE curso_id = ?", [cursoId], (err, results) =>
@@ -120,7 +114,6 @@ router.get("/curso/:id", (req, res) => {
     });
 });
 
-// Atualizar curso
 router.put("/curso/:id", (req, res) => {
   const cursoId = req.params.id;
   const { titulo, descricao, duracao } = req.body;
@@ -137,7 +130,6 @@ router.put("/curso/:id", (req, res) => {
   );
 });
 
-// Ativar/Desativar curso
 router.put("/curso/:id/ativar", (req, res) => {
   const cursoId = req.params.id;
   const { ativo } = req.body;
@@ -150,7 +142,6 @@ router.put("/curso/:id/ativar", (req, res) => {
   });
 });
 
-// Adicionar tarefa a um curso
 router.post("/curso/:id/tarefas", (req, res) => {
   const cursoId = req.params.id;
   const { titulo, descricao } = req.body;
@@ -163,7 +154,6 @@ router.post("/curso/:id/tarefas", (req, res) => {
   });
 });
 
-// Upload de ficheiro associado a tarefa
 router.post("/curso/:id/upload-ficheiro", uploadFicheiros.single("ficheiro"), (req, res) => {
   const cursoId = req.params.id;
   const { tarefa_id } = req.body;
@@ -180,7 +170,6 @@ router.post("/curso/:id/upload-ficheiro", uploadFicheiros.single("ficheiro"), (r
   });
 });
 
-// GET dados do instrutor pelo ID do utilizador
 router.get('/:id', (req, res) => {
   const idUtilizador = req.params.id;
 
@@ -189,7 +178,6 @@ router.get('/:id', (req, res) => {
     FROM utilizadores u
     JOIN instrutores a ON a.utilizador_id = u.id 
     WHERE u.id = ? AND u.cargo = 'instrutor'
-
   `;
 
   db.query(query, [idUtilizador], (err, results) => {
@@ -206,7 +194,6 @@ router.get('/:id', (req, res) => {
   });
 });
 
-// Atualizar email e/ou palavra-passe do instrutor
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const { email, passe } = req.body;
@@ -246,7 +233,6 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-//editar tarefa
 router.put("/curso/:cursoId/tarefas/:tarefaId", (req, res) => {
   const { cursoId, tarefaId } = req.params;
   const { titulo, descricao } = req.body;
@@ -261,7 +247,6 @@ router.put("/curso/:cursoId/tarefas/:tarefaId", (req, res) => {
   });
 });
 
-//apagar tarefa
 router.delete("/curso/:cursoId/tarefas/:tarefaId", (req, res) => {
   const { cursoId, tarefaId } = req.params;
 
@@ -275,7 +260,6 @@ router.delete("/curso/:cursoId/tarefas/:tarefaId", (req, res) => {
   });
 });
 
-//apagar ficheiro
 router.delete("/curso/:cursoId/ficheiros/:ficheiroId", (req, res) => {
   const { cursoId, ficheiroId } = req.params;
 
@@ -311,7 +295,7 @@ router.get("/curso/:id/alunos", (req, res) => {
 
 router.post("/tarefas/:id/exercicio", (req, res) => {
   const idTarefa = req.params.id;
-  const { pergunta, opcoes } = req.body; // opcoes = [{ texto_opcao, correta }]
+  const { pergunta, opcoes } = req.body;
 
   const sqlExercicio = "INSERT INTO exercicios (id_tarefa, pergunta, tipo) VALUES (?, ?, 'escolha_multipla')";
 
@@ -322,7 +306,6 @@ router.post("/tarefas/:id/exercicio", (req, res) => {
     }
 
     const idExercicio = result.insertId;
-
     const valoresOpcoes = opcoes.map(op => [idExercicio, op.texto_opcao, op.correta ? 1 : 0]);
 
     const sqlOpcoes = "INSERT INTO opcoes_exercicio (id_exercicio, texto_opcao, correta) VALUES ?";
@@ -379,8 +362,6 @@ router.get("/tarefas/:id/exercicios", (req, res) => {
   });
 });
 
-
-
 router.delete("/exercicios/:id", (req, res) => {
   const id = req.params.id;
 
@@ -400,12 +381,5 @@ router.delete("/exercicios/:id", (req, res) => {
     });
   });
 });
-
-
-
-
-
-
-
 
 module.exports = router;

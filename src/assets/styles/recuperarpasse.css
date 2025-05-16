@@ -1,84 +1,84 @@
 /* Container principal */
 .recuperar-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f4f7fc;
-    padding: 20px;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f7fc;
+  padding: 20px;
+}
   
-  /* Formulário */
-  .recuperar-form {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-  }
+/* Formulário */
+.recuperar-form {
+  background-color: #fff;
+  padding: 40px; /* aumenta o espaçamento interno */
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px; /* aumenta a largura do formulário */
+  text-align: center;
+}
   
-  .recuperar-form h2 {
-    font-size: 1.5rem;
-    color: #333;
-    margin-bottom: 15px;
-  }
+.recuperar-form h2 {
+  font-size: 2rem; /* aumenta o tamanho do título */
+  color: #333;
+  margin-bottom: 20px;
+}
   
-  .recuperar-form p {
-    font-size: 0.95rem;
-    color: #666;
-    margin-bottom: 20px;
-  }
+.recuperar-form p {
+  font-size: 1.05rem; /* aumenta o tamanho do texto explicativo */
+  color: #666;
+  margin-bottom: 25px;
+}
   
-  /* Input */
-  .recuperar-form input {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-    font-weight: bold;
-  }
+/* Input */
+.recuperar-form input {
+  width: 100%;
+  padding: 16px; /* aumenta o padding do input */
+  margin: 12px 0 25px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1.1rem; /* aumenta o tamanho da fonte */
+  font-weight: bold;
+}
   
-  .recuperar-form input:focus {
-    border-color: #ffb400;
-    outline: none;
-  }
+.recuperar-form input:focus {
+  border-color: #ffb400;
+  outline: none;
+}
   
-  /* Botão */
-  .recuperar-form button {
-    width: 100%;
-    padding: 12px;
-    background-color: #ffb400;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
+/* Botão */
+.recuperar-form button {
+  width: 100%;
+  padding: 16px; /* aumenta o padding do botão */
+  background-color: #ffb400;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.1rem; /* aumenta o tamanho da fonte */
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.recuperar-form button:hover {
+  background-color: #e0a800;
+}
   
-  .recuperar-form button:hover {
-    background-color: #e0a800;
-  }
+/* Link para voltar */
+.back-to-login {
+  margin-top: 15px;
+  font-size: 0.9rem;
+}
   
-  /* Link para voltar */
-  .back-to-login {
-    margin-top: 15px;
-    font-size: 0.9rem;
-  }
+.back-to-login a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
   
-  .back-to-login a {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  .back-to-login a:hover {
-    text-decoration: underline;
-    color: #0056b3;
-  }
+.back-to-login a:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
   

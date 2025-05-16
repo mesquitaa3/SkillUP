@@ -33,17 +33,17 @@ body, html {
 
 .criar-conta-form {
   background-color: #fff;
-  padding: 30px;
+  padding: 40px; /* aumenta o espaçamento interno */
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 400px;
+  max-width: 500px; /* aumenta a largura do formulário */
 }
 
 .criar-conta-form h2 {
   text-align: center;
-  margin-bottom: 20px;
-  font-size: 1.5rem;
+  margin-bottom: 25px;
+  font-size: 2rem; /* aumenta o tamanho do título */
   color: #333;
 }
 
@@ -51,11 +51,11 @@ body, html {
 .criar-conta-form select,
 .criar-conta-form button {
   width: 100%;
-  padding: 12px;
-  margin: 10px 0;
+  padding: 16px; /* aumenta o padding dos campos */
+  margin: 12px 0;
   border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: 1rem;
+  font-size: 1.1rem; /* aumenta o tamanho da fonte */
   font-weight: bold;
 }
 

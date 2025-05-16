@@ -8,14 +8,14 @@ function CursosLanding() {
     ];
 
     return (
-        <div className="cursos-section-landing">
-            <h2 className="cursos-title-landing">Cursos</h2>
-            <div className="cursos-container-landing">
+        <div className="landing-cursos-section">
+            <h2 className="landing-cursos-title">Cursos Populares</h2>
+            <div className="landing-cursos-container">
                 {cursoslanding.map((curso) => (
-                    <div key={curso.id} className="curso-card">
-                        <img src={curso.image} alt={curso.title} />
-                        <h3>{curso.title}</h3>
-                        <p>{curso.description}</p>
+                    <div key={curso.id} className="landing-curso-card">
+                        <img src={curso.image} alt={curso.title} className="landing-curso-image" />
+                        <h3 className="landing-curso-title">{curso.title}</h3>
+                        <p className="landing-curso-description">{curso.description}</p>
                     </div>
                 ))}
             </div>
@@ -24,5 +24,3 @@ function CursosLanding() {
 }
 
 export default CursosLanding;
-
-//ligar à base de dados para mostrar os 3 cursos mais populares
