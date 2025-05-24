@@ -6,13 +6,8 @@ const fs = require("fs");
 const mysql = require('mysql2');
 const bcrypt = require('bcrypt');
 
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "admin123", 
-  database: "skillup", 
-  port: 3307
-});
+const db = require('../db'); // ✅ importa a instância centralizada
+
 
 // Criar pastas se não existirem
 const uploadPath = path.join(__dirname, "../uploads");
@@ -130,17 +125,35 @@ router.put("/curso/:id", (req, res) => {
   );
 });
 
-router.put("/curso/:id/ativar", (req, res) => {
-  const cursoId = req.params.id;
-  const { ativo } = req.body;
-  db.query("UPDATE cursos SET ativo = ? WHERE id = ?", [ativo, cursoId], (err) => {
+// Ativar curso
+router.put('/ativar-curso/:id', (req, res) => {
+  const { id } = req.params;
+  const query = `UPDATE cursos SET visivel = 1 WHERE id = ?`;
+
+  db.query(query, [id], (err, result) => {
     if (err) {
-      console.error("Erro ao alterar estado do curso:", err);
-      return res.status(500).json({ erro: "Erro ao alterar estado do curso" });
+      console.error("Erro ao ativar curso:", err);
+      return res.status(500).json({ erro: "Erro ao ativar curso" });
     }
-    res.json({ mensagem: "Estado do curso atualizado com sucesso" });
+    res.json({ mensagem: "Curso ativado com sucesso" });
   });
 });
+
+
+router.put('/desativar-curso/:id', (req, res) => {
+  const { id } = req.params;
+  const query = `UPDATE cursos SET visivel = 0 WHERE id = ?`;
+
+  db.query(query, [id], (err, result) => {
+    if (err) {
+      console.error("Erro ao desativar curso:", err);
+      return res.status(500).json({ erro: "Erro ao desativar curso" });
+    }
+    res.json({ mensagem: "Curso desativado com sucesso" });
+  });
+});
+
+
 
 router.post("/curso/:id/tarefas", (req, res) => {
   const cursoId = req.params.id;

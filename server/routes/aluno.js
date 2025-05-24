@@ -4,13 +4,8 @@ const bcrypt = require('bcrypt');
 const mysql = require('mysql2');
 const router = express.Router();
 
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'admin123',
-  database: 'skillup',
-  port: 3307,
-});
+const db = require('../db'); // ✅ importa a instância centralizada
+
 
 //GET dados do aluno pelo ID do utilizador
 router.get('/:id', (req, res) => {

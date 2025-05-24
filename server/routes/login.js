@@ -3,14 +3,8 @@ const express = require('express');
 const mysql = require('mysql2');
 const bcrypt = require('bcrypt');
 const router = express.Router();
+const db = require('../db'); // ✅ importa a instância centralizada
 
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'admin123',
-  database: 'skillup',
-  port: 3307,
-});
 
 router.post('/', async (req, res) => {
   const { email, password } = req.body;

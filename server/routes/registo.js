@@ -4,13 +4,8 @@ const bcrypt = require("bcrypt");
 
 const router = express.Router();
 
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "admin123", 
-  database: "skillup", 
-  port: 3307
-});
+const db = require('../db'); // ✅ importa a instância centralizada
+
 
 // Rota para registo de utilizadores
 router.post("/", async (req, res) => {

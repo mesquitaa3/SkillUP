@@ -3,13 +3,8 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql2');
 
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'admin123',
-  database: 'skillup',
-  port: 3307
-});
+const db = require('../db'); // ✅ importa a instância centralizada
+
 
 // POST /api/responder
 router.post('/', (req, res) => {

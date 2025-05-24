@@ -2,14 +2,8 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql2');
 
-// Conexão com a base de dados
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'admin123',
-  database: 'skillup',
-  port: 3307,
-});
+const db = require('../db'); // ✅ importa a instância centralizada
+
 
 // Rota: GET /api/tarefa/:id/exercicios
 router.get('/:id/exercicios', (req, res) => {
