@@ -1,0 +1,302 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f5f7fb;
+  color: #111;
+}
+
+.curso-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background: #007bff;
+  color: #fff;
+  padding: 30px 20px;
+  min-width: 240px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar h2 {
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.sidebar nav button {
+  background: transparent;
+  color: #fff;
+  border: none;
+  font-size: 16px;
+  padding: 12px 10px;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  border-left: 4px solid transparent;
+  transition: 0.3s;
+}
+
+.sidebar nav button:hover,
+.sidebar nav button.active {
+  background-color: #0056b3;
+  border-left: 4px solid #fff;
+}
+
+.content {
+  flex: 1;
+  padding: 40px;
+}
+
+.card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 30px;
+}
+
+/* ===== DETALHES DO CURSO ===== */
+.detalhe-panel h3 {
+  color: #007bff;
+  margin-bottom: 20px;
+}
+
+.detalhe-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.detalhe-item {
+  background-color: #f9f9f9;
+  padding: 16px;
+  border-radius: 8px;
+  border-left: 4px solid #007bff;
+}
+
+.detalhe-label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.detalhe-descricao {
+  grid-column: span 2;
+}
+
+/* ===== TAREFAS E EXERCÍCIOS ===== */
+.tarefa-header h4 {
+  margin: 0;
+  color: #007bff;
+}
+
+.tarefa-header small {
+  font-size: 14px;
+  color: #666;
+}
+
+.tarefa-progresso {
+  width: 100%;
+  height: 6px;
+  background: #e4eaf1;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.tarefa-progresso div {
+  height: 100%;
+  background-color: #007bff;
+  transition: width 0.3s ease;
+}
+
+.exercicio-card {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 15px 20px;
+  margin-top: 20px;
+  border-radius: 8px;
+}
+
+.exercicio-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.exercicio-status {
+  font-size: 18px;
+}
+
+/* Opções do exercício */
+.opcoes {
+  margin-top: 10px;
+}
+
+.opcao {
+  display: block;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: #f1f1f1;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.opcao:hover {
+  background: #e0e0e0;
+}
+
+.opcao.selecionada {
+  border-left: 4px solid #007bff;
+  background: #dceeff;
+}
+
+button[type="submit"] {
+  margin-top: 12px;
+  padding: 10px 20px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background: #0056b3;
+}
+
+.bloqueado {
+  color: #dc3545;
+  font-style: italic;
+  margin-top: 10px;
+}
+
+/* ===== FEEDBACK DE RESPOSTA CORRETA ===== */
+.resposta-final.correta {
+  background: #d4edda;
+  padding: 12px;
+  border-radius: 6px;
+  border-left: 4px solid #28a745;
+  margin-top: 10px;
+  color: #155724;
+  font-weight: 500;
+}
+
+.resposta-correta {
+  margin-top: 8px;
+}
+
+/* ===== FICHEIROS ===== */
+.ficheiros-grid {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.ficheiro-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f8f9fa;
+  padding: 12px 16px;
+  border-radius: 8px;
+  transition: 0.2s;
+  border: 1px solid #ddd;
+}
+
+.ficheiro-item:hover {
+  background-color: #e9f2ff;
+}
+
+.ficheiro-icone {
+  font-size: 20px;
+}
+
+.ficheiro-item a {
+  font-weight: 500;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.ficheiro-item a:hover {
+  text-decoration: underline;
+}
+
+.loading {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 50px;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 768px) {
+  .curso-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    flex-direction: row;
+    justify-content: space-around;
+    min-width: 100%;
+  }
+
+  .sidebar nav button {
+    border-left: none;
+    border-bottom: 4px solid transparent;
+  }
+
+  .sidebar nav button.active {
+    border-bottom: 4px solid #fff;
+  }
+
+  .content {
+    padding: 20px;
+  }
+
+  .detalhe-grid,
+  .ficheiros-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+.progresso-global {
+  margin-bottom: 30px;
+}
+
+.barra-externa {
+  width: 100%;
+  height: 12px;
+  background: #e4eaf1;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.barra-interna {
+  height: 100%;
+  background-color: #007bff;
+  transition: width 0.3s ease;
+}
+
+.reiniciar-btn {
+  background: transparent;
+  border: 1px solid #dc3545;
+  color: #dc3545;
+  border-radius: 6px;
+  padding: 6px 12px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.reiniciar-btn:hover {
+  background: #dc3545;
+  color: #fff;
+}

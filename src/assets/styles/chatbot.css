@@ -1,0 +1,112 @@
+/* Contêiner para o chatbot, centralizado na tela */
+.chatbot-wrapper {
+  display: flex;
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center; /* Centraliza verticalmente */
+  position: fixed; /* Fixa o chatbot */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000; /* Coloca o chatbot acima de outros elementos */
+  pointer-events: none; /* Permite interação com o resto da página */
+}
+
+/* Contêiner do chatbot */
+.chatbot-container {
+  width: 1000px; /* Aumenta o tamanho do formulário */
+  height: 550px; /* Aumenta a altura do formulário */
+  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: auto; /* Permite interação com o chatbot */
+}
+
+/* Caixa de mensagens do chatbot */
+.chatbot-box {
+  height: 75%; /* Ajusta a altura da área de mensagens */
+  overflow-y: scroll;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Alinha as mensagens no topo */
+}
+
+/* Estilo das mensagens do usuário */
+.chatbot-user-message,
+.chatbot-bot-message {
+  margin: 5px 0;
+  padding: 8px;
+  border-radius: 5px;
+  word-wrap: break-word;
+}
+
+/* Estilo das mensagens do usuário */
+.chatbot-user-message {
+  background-color: #d1e7ff;
+  text-align: right;
+}
+
+/* Estilo das mensagens do bot */
+.chatbot-bot-message {
+  background-color: #e3f2fd;
+  text-align: left;
+}
+
+/* Caixa de input e botão */
+.chatbot-input-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+/* Campo de input */
+.chatbot-input {
+  width: 80%;
+  padding: 8px;
+  margin-right: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Botão de envio */
+.chatbot-button {
+  width: 15%;
+  padding: 8px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Estilo do botão no hover */
+.chatbot-button:hover {
+  background-color: #45a049;
+}
+
+/* Comandos listados em negrito */
+.chatbot-bot-message b {
+  font-weight: bold;
+}
+
+/* Adicionando espaçamento entre os comandos */
+.chatbot-bot-message {
+  white-space: pre-line; /* Preserve as quebras de linha */
+  margin-bottom: 10px; /* Espaço entre os comandos */
+}
+
+/* Estilo para os comandos na mensagem do bot */
+.chatbot-bot-message {
+  background-color: #e3f2fd;
+  text-align: left;
+}
+
+.chatbot-bot-message span {
+  font-weight: bold;
+}

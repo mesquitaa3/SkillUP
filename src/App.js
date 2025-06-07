@@ -1,4 +1,3 @@
-// App.js
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
@@ -13,6 +12,7 @@ import PagAluno from "./pages/PagAluno";
 import PagInstrutor from "./pages/PagInstrutor";
 import SobreNos from "./pages/SobreNos";
 import RecuperarPasse from "./pages/RecuperarPasse";
+import ResetPassword from "./pages/ResetPassword";  // Adiciona o import para a página de reset
 import LayoutAluno from "./components/LayoutAluno";
 import LayoutInstrutor from "./components/LayoutInstrutor";
 import PrivateRoute from './components/PrivateRoute';
@@ -28,6 +28,7 @@ import VisualizarCursoInstrutor from "./pages/VisualizarCursoInstrutor";  // Pá
 import CursoAlunoDetalhes from "./pages/CursoAlunoDetalhes";
 import CursosInscritosAluno from "./pages/CursosInscritoAluno";  // Página de cursos inscritos do aluno
 import Logout from "./pages/Logout";
+import Chatbot from "./pages/Chatbot";
 import "./assets/styles/styles.css";
 
 function App() {
@@ -44,6 +45,8 @@ function App() {
           <Route path="/CriarConta" element={<><Navbar /><CriarConta /></>} />
           <Route path="/Login" element={<><Navbar /><Login /></>} />
           <Route path="/RecuperarPasse" element={<><Navbar /><RecuperarPasse /></>} />
+          <Route path="/reset-password/:token" element={<><Navbar /><ResetPassword /></>} />  {/* Rota para redefinir a palavra-passe */}
+          <Route path="/Chatbot" element={<><Navbar /><Chatbot /></>} />
           <Route path="/logout" element={<Logout />} />
           
           {/* Rotas protegidas com NavbarAluno ou NavbarInstrutor */}

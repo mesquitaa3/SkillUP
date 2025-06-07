@@ -1,14 +1,20 @@
 // src/pages/RecuperarPasse.js
 import React, { useState } from "react";
+import axios from "axios";
 import "../assets/styles/recuperarpasse.css";
 
 const RecuperarPasse = () => {
   const [email, setEmail] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aqui no futuro vais fazer a chamada à API
-    alert("Se o email estiver registado, enviámos instruções para recuperar a palavra-passe.");
+    try {
+      const response = await axios.post("http://localhost:3001/api/recover", { email });
+      alert(response.data.message); // Exibe a mensagem de sucesso ou erro
+    } catch (error) {
+      console.error("Erro ao enviar email de recuperação:", error);
+      alert("Erro ao enviar as instruções. Tente novamente.");
+    }
   };
 
   return (

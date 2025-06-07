@@ -20,6 +20,7 @@ function Navbar() {
                 <li><Link to="/">Home</Link></li>
                 <li><Link to="/Cursos">Cursos</Link></li>
                 <li><a href="/SobreNos">Sobre Nós</a></li>
+                <li><Link to="/Chatbot">Chatbot</Link></li>
             </ul>
             <div className="logo">SkillUP</div>
             <div className="auth-buttons">

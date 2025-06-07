@@ -192,9 +192,35 @@ router.get('/curso/:id', (req, res) => {
   });
 });
 
+// GET /api/aluno/:id/respostas
+router.get('/:id/respostas', (req, res) => {
+  const alunoId = req.params.id;
 
+  const query = `
+    SELECT id_exercicio, MAX(correta) AS correta
+    FROM (
+      SELECT r.id_exercicio, o.correta
+      FROM respostas_aluno r
+      JOIN opcoes_exercicio o ON r.id_opcao_escolhida = o.id
+      WHERE r.id_aluno = ?
+    ) AS sub
+    GROUP BY id_exercicio
+  `;
 
+  db.query(query, [alunoId], (err, results) => {
+    if (err) {
+      console.error('Erro ao buscar respostas do aluno:', err);
+      return res.status(500).json({ erro: 'Erro ao buscar respostas do aluno.' });
+    }
 
+    const respostas = results.map(r => ({
+      exercicioId: r.id_exercicio,
+      correta: !!r.correta
+    }));
+
+    res.json({ respostas });
+  });
+});
 
 
 
