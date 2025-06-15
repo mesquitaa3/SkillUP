@@ -222,6 +222,28 @@ router.get('/:id/respostas', (req, res) => {
   });
 });
 
+// GET /api/aluno/:id/cursos
+router.get('/:id/cursos', (req, res) => {
+  const alunoId = req.params.id;
+
+  const query = `
+    SELECT c.*
+    FROM cursos c
+    JOIN inscricoes i ON i.id_curso = c.id
+    WHERE i.id_aluno = ?
+  `;
+
+  db.query(query, [alunoId], (err, results) => {
+    if (err) {
+      console.error('Erro ao buscar cursos do aluno:', err);
+      return res.status(500).json({ erro: 'Erro ao buscar cursos' });
+    }
+
+    res.json(results); // Retorna os cursos ativos ao aluno
+  });
+});
+
+
 
 
 module.exports = router;

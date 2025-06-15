@@ -263,15 +263,59 @@ router.put("/curso/:cursoId/tarefas/:tarefaId", (req, res) => {
 router.delete("/curso/:cursoId/tarefas/:tarefaId", (req, res) => {
   const { cursoId, tarefaId } = req.params;
 
-  const sql = "DELETE FROM tarefas WHERE id = ? AND id_curso = ?";
-  db.query(sql, [tarefaId, cursoId], (err) => {
-    if (err) {
-      console.error("Erro ao apagar tarefa:", err);
-      return res.status(500).json({ erro: "Erro ao apagar tarefa" });
-    }
-    res.json({ mensagem: "Tarefa apagada com sucesso" });
+  // Primeiro, excluir as respostas dos alunos que fazem referência às opções de exercício
+  const excluirRespostas = new Promise((resolve, reject) => {
+    db.query("DELETE FROM respostas_aluno WHERE id_opcao_escolhida IN (SELECT id FROM opcoes_exercicio WHERE id_exercicio IN (SELECT id FROM exercicios WHERE id_tarefa = ?))", [tarefaId], (err) => {
+      if (err) {
+        console.error("Erro ao apagar respostas:", err);
+        return reject("Erro ao apagar respostas");
+      }
+      resolve();
+    });
   });
+
+  // Segundo, excluir as opções associadas aos exercícios da tarefa
+  const excluirOpcoes = new Promise((resolve, reject) => {
+    db.query("DELETE FROM opcoes_exercicio WHERE id_exercicio IN (SELECT id FROM exercicios WHERE id_tarefa = ?)", [tarefaId], (err) => {
+      if (err) {
+        console.error("Erro ao apagar opções:", err);
+        return reject("Erro ao apagar opções");
+      }
+      resolve();
+    });
+  });
+
+  // Depois, excluir os exercícios
+  const excluirExercicios = new Promise((resolve, reject) => {
+    db.query("DELETE FROM exercicios WHERE id_tarefa = ?", [tarefaId], (err) => {
+      if (err) {
+        console.error("Erro ao apagar exercícios:", err);
+        return reject("Erro ao apagar exercícios");
+      }
+      resolve();
+    });
+  });
+
+  // Finalmente, excluir a tarefa
+  Promise.all([excluirRespostas, excluirOpcoes, excluirExercicios])
+    .then(() => {
+      const sql = "DELETE FROM tarefas WHERE id = ? AND id_curso = ?";
+      db.query(sql, [tarefaId, cursoId], (err) => {
+        if (err) {
+          console.error("Erro ao apagar tarefa:", err);
+          return res.status(500).json({ erro: "Erro ao apagar tarefa" });
+        }
+        res.json({ mensagem: "Tarefa apagada com sucesso" });
+      });
+    })
+    .catch((error) => {
+      console.error("Erro ao excluir respostas, opções, exercícios ou tarefas:", error);
+      res.status(500).json({ erro: "Erro ao excluir tarefa, exercícios ou opções" });
+    });
 });
+
+
+
 
 router.delete("/curso/:cursoId/ficheiros/:ficheiroId", (req, res) => {
   const { cursoId, ficheiroId } = req.params;

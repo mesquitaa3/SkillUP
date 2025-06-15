@@ -105,17 +105,29 @@ function VisualizarCursoInstrutor() {
     setOpcoes(novas);
   };
 
-  const handleCriarExercicio = () => {
-    axios.post(`http://localhost:3001/api/instrutor/tarefas/${tarefaSelecionada}/exercicio`, {
-      pergunta: novaPergunta,
-      opcoes
-    }).then(() => {
-      setNovaPergunta("");
-      setOpcoes([{ texto_opcao: "", correta: false }]);
-      setTarefaSelecionada("");
-      alert("Exercício criado com sucesso!");
-    });
-  };
+const handleCriarExercicio = () => {
+  if (!tarefaSelecionada) {
+    alert("Por favor, selecione uma tarefa para adicionar o exercício.");
+    return;
+  }
+
+  const url = `http://localhost:3001/api/instrutor/tarefas/${tarefaSelecionada}/exercicio`;
+  console.log("URL da requisição:", url);  // Verifique a URL no console
+
+  axios.post(url, {
+    pergunta: novaPergunta,
+    opcoes
+  }).then(() => {
+    setNovaPergunta("");
+    setOpcoes([{ texto_opcao: "", correta: false }]);
+    setTarefaSelecionada(""); // Resetando a seleção após a criação do exercício
+    alert("Exercício criado com sucesso!");
+  }).catch(error => {
+    console.error("Erro ao criar exercício:", error);
+  });
+};
+
+
 
   const carregarExercicios = (tarefaId) => {
     setTarefaExercicios(tarefaId);
@@ -127,171 +139,249 @@ function VisualizarCursoInstrutor() {
     axios.delete(`http://localhost:3001/api/instrutor/exercicios/${id}`).then(() => carregarExercicios(tarefaExercicios));
   };
 
-  if (!curso) return <div className="loading">📘 A carregar...</div>;
+  if (!curso) return <div className="loading">A carregar...</div>;
 
   return (
     <div className="curso-layout">
-      <aside className="sidebar">
+      <aside className="sidebar-instrutor">
         <h2>{curso.titulo}</h2>
         <nav>
-          <button className={tab === "detalhes" ? "active" : ""} onClick={() => setTab("detalhes")}>📝 Detalhes</button>
-          <button className={tab === "tarefas" ? "active" : ""} onClick={() => setTab("tarefas")}>📚 Tarefas</button>
-          <button className={tab === "ficheiros" ? "active" : ""} onClick={() => setTab("ficheiros")}>📂 Ficheiros</button>
-          <button className={tab === "alunos" ? "active" : ""} onClick={() => setTab("alunos")}>👥 Alunos</button>
+          <button className={tab === "detalhes" ? "active" : ""} onClick={() => setTab("detalhes")}>Detalhes</button>
+          <button className={tab === "tarefas" ? "active" : ""} onClick={() => setTab("tarefas")}>Tarefas</button>
+          <button className={tab === "ficheiros" ? "active" : ""} onClick={() => setTab("ficheiros")}>Ficheiros</button>
+          <button className={tab === "alunos" ? "active" : ""} onClick={() => setTab("alunos")}>Alunos</button>
         </nav>
       </aside>
 
       <main className="content">
         {tab === "detalhes" && (
-          <section className="card">
-            {editandoCurso ? (
-              <>
-                <input value={cursoEditado.titulo} onChange={e => setCursoEditado({ ...cursoEditado, titulo: e.target.value })} />
-                <input value={cursoEditado.duracao} onChange={e => setCursoEditado({ ...cursoEditado, duracao: e.target.value })} />
-                <textarea value={cursoEditado.descricao} onChange={e => setCursoEditado({ ...cursoEditado, descricao: e.target.value })} />
-                <button onClick={handleEditarCurso}>Guardar</button>
-                <button onClick={() => setEditandoCurso(false)}>Cancelar</button>
-              </>
-            ) : (
-              <>
-                <p><strong>Duração:</strong> {curso.duracao}</p>
-                <p><strong>Descrição:</strong> {curso.descricao}</p>
-                <button onClick={() => setEditandoCurso(true)}>Editar</button>
-              </>
-            )}
-          </section>
-        )}
+  <section className="card">
+    {editandoCurso ? (
+      <>
+        <label htmlFor="titulo">Título do Curso:</label>
+        <input
+          id="titulo"
+          value={cursoEditado.titulo}
+          onChange={e => setCursoEditado({ ...cursoEditado, titulo: e.target.value })}
+          placeholder="Exemplo: Curso de Programação"
+        />
+        
+        <label htmlFor="descricao">Descrição:</label>
+        <textarea
+          id="descricao"
+          value={cursoEditado.descricao}
+          onChange={e => setCursoEditado({ ...cursoEditado, descricao: e.target.value })}
+          placeholder="Exemplo: Curso completo para aprender a programar"
+        />
+
+        <label htmlFor="duracao">Duração:</label>
+        <input
+          id="duracao"
+          value={cursoEditado.duracao}
+          onChange={e => setCursoEditado({ ...cursoEditado, duracao: e.target.value })}
+          placeholder="Exemplo: 10 Horas"
+        />
+
+        <label htmlFor="preco">Preço:</label>
+        <input
+          id="preco"
+          type="text"
+          value={cursoEditado.preco}
+          onChange={e => {
+            const valor = e.target.value;
+            // Remover caracteres não numéricos, exceto ponto para decimais
+            const precoSemSimbolo = valor.replace(/[^\d,.-]/g, '').replace(',', '.');
+            setCursoEditado({ ...cursoEditado, preco: precoSemSimbolo });
+          }}
+          placeholder="Exemplo: 100 €"
+        />
+
+        <button onClick={handleEditarCurso}>Guardar</button>
+        <button onClick={() => setEditandoCurso(false)}>Cancelar</button>
+      </>
+    ) : (
+      <>
+        <p><strong>Título do Curso:</strong> {curso.titulo}</p>
+        <p><strong>Descrição:</strong> {curso.descricao}</p>
+        <p><strong>Duração:</strong> {curso.duracao}</p>
+        <p><strong>Preço:</strong> {curso.preco} €</p>
+        <button onClick={() => setEditandoCurso(true)}>Editar</button>
+      </>
+    )}
+  </section>
+)}
+
 
         {tab === "tarefas" && (
-          <section className="card">
-            <h3>📘 Tarefas</h3>
+  <section className="card-tarefas">
+    <h3 className="section-title-tarefas">Tarefas</h3>
 
-            <div className="form-bloco">
-              <input placeholder="Título" value={novaTarefa.titulo} onChange={e => setNovaTarefa({ ...novaTarefa, titulo: e.target.value })} />
-              <textarea placeholder="Descrição" value={novaTarefa.descricao} onChange={e => setNovaTarefa({ ...novaTarefa, descricao: e.target.value })} />
-              <button onClick={handleAdicionarTarefa}>Adicionar Tarefa</button>
-            </div>
+    {/* Formulário para adicionar uma nova tarefa */}
+    <div className="form-bloco-tarefas">
+      <h4 className="form-subtitle-tarefas">Adicionar Tarefa</h4>
+      <input
+        placeholder="Título da Tarefa"
+        value={novaTarefa.titulo}
+        onChange={e => setNovaTarefa({ ...novaTarefa, titulo: e.target.value })}
+        className="input-field-tarefas"
+      />
+      <textarea
+        placeholder="Descrição da Tarefa"
+        value={novaTarefa.descricao}
+        onChange={e => setNovaTarefa({ ...novaTarefa, descricao: e.target.value })}
+        className="textarea-field-tarefas"
+      />
+      <button onClick={handleAdicionarTarefa} className="button-primary-tarefas">Adicionar Tarefa</button>
+    </div>
 
-            <ul className="lista-tarefas">
-              {tarefas.map(t => (
-                <li key={t.id}>
-                  {tarefaEditandoId === t.id ? (
-                    <>
-                      <input value={tarefaEditada.titulo} onChange={e => setTarefaEditada({ ...tarefaEditada, titulo: e.target.value })} />
-                      <textarea value={tarefaEditada.descricao} onChange={e => setTarefaEditada({ ...tarefaEditada, descricao: e.target.value })} />
-                      <button onClick={() => handleEditarTarefa(t.id)}>Guardar</button>
-                      <button onClick={() => setTarefaEditandoId(null)}>Cancelar</button>
-                    </>
-                  ) : (
-                    <>
-                      <strong>{t.titulo}</strong> — {t.descricao}
-                      <br />
-                      <div className="botoes-tarefa">
-                        <button onClick={() => { setTarefaEditandoId(t.id); setTarefaEditada(t); }}>Editar</button>
-                        <button onClick={() => handleApagarTarefa(t.id)}>Apagar</button>
-                      </div>
-                    </>
-                  )}
-                </li>
-              ))}
-            </ul>
-
-            <div className="form-bloco">
-              <h4>Adicionar Exercício</h4>
-              <select value={tarefaSelecionada} onChange={e => setTarefaSelecionada(e.target.value)}>
-                <option value="">Selecionar Tarefa</option>
-                {tarefas.map(t => <option key={t.id} value={t.id}>{t.titulo}</option>)}
-              </select>
-              <input placeholder="Pergunta" value={novaPergunta} onChange={e => setNovaPergunta(e.target.value)} />
-              {opcoes.map((op, i) => (
-                <div key={i}>
-                  <div className="opcao-linha">
-                    <input
-                      type="text"
-                      placeholder={`Opção ${i + 1}`}
-                      value={op.texto_opcao}
-                      onChange={e => atualizarOpcao(i, "texto_opcao", e.target.value)}
-                    />
-                    <label className="checkbox-opcao">
-                      <input
-                        type="checkbox"
-                        checked={op.correta}
-                        onChange={e => atualizarOpcao(i, "correta", e.target.checked)}
-                      />
-                      Correta
-                    </label>
-                  </div>
-
-                  {opcoes.length > 1 && <button onClick={() => removerOpcao(i)}>❌</button>}
-                </div>
-              ))}
-              <div className="botoes-exercicio">
-                <button onClick={adicionarOpcao}>+ Opção</button>
-                <button onClick={handleCriarExercicio}>Guardar Exercício</button>
+    {/* Lista de tarefas existentes */}
+    <ul className="lista-tarefas-tarefas">
+      {tarefas.map(t => (
+        <li key={t.id} className="task-item-tarefas">
+          {tarefaEditandoId === t.id ? (
+            <div className="task-edit-tarefas">
+              <input
+                value={tarefaEditada.titulo}
+                onChange={e => setTarefaEditada({ ...tarefaEditada, titulo: e.target.value })}
+                className="input-field-tarefas"
+              />
+              <textarea
+                value={tarefaEditada.descricao}
+                onChange={e => setTarefaEditada({ ...tarefaEditada, descricao: e.target.value })}
+                className="textarea-field-tarefas"
+              />
+              <div className="button-group-tarefas">
+                <button onClick={() => handleEditarTarefa(t.id)} className="button-primary-tarefas">Guardar</button>
+                <button onClick={() => setTarefaEditandoId(null)} className="button-secondary-tarefas">Cancelar</button>
               </div>
             </div>
-
-            <div className="form-bloco">
-              <h4>Ver Exercícios</h4>
-              <select value={tarefaExercicios} onChange={e => carregarExercicios(e.target.value)}>
-                <option value="">Selecionar Tarefa</option>
-                {tarefas.map(t => <option key={t.id} value={t.id}>{t.titulo}</option>)}
-              </select>
-              <ul>
-                {exercicios.map(ex => (
-                  <li key={ex.id}>
-                    <strong>{ex.pergunta}</strong>
-                    <ul>
-                      {ex.opcoes.map(op => (
-                        <li key={op.id}>{op.correta ? "✅" : "⬜"} {op.texto_opcao}</li>
-                      ))}
-                    </ul>
-                    <button onClick={() => apagarExercicio(ex.id)}>Apagar</button>
-                  </li>
-                ))}
-              </ul>
+          ) : (
+            <div className="task-view-tarefas">
+              <strong>{t.titulo}</strong> — {t.descricao}
+              <div className="button-group-tarefas">
+                <button onClick={() => { setTarefaEditandoId(t.id); setTarefaEditada(t); }} className="button-edit-tarefas">Editar</button>
+                <button onClick={() => handleApagarTarefa(t.id)} className="button-delete-tarefas">Apagar</button>
+              </div>
             </div>
-          </section>
-        )}
+          )}
+        </li>
+      ))}
+    </ul>
 
-        {tab === "ficheiros" && (
-          <section className="card">
-            <h3>📂 Ficheiros</h3>
+    {/* Formulário para adicionar um exercício */}
+<div className="form-bloco-tarefas">
+  <h4 className="form-subtitle-tarefas">Adicionar Exercício</h4>
+  <select
+  value={tarefaSelecionada}
+  onChange={e => setTarefaSelecionada(e.target.value)}
+  className="select-field-tarefas"
+>
+  <option value="">Selecionar Tarefa</option>
+  {tarefas.map(t => (
+    <option key={t.id} value={t.id}>{t.titulo}</option>
+  ))}
+</select>
+  <input
+    placeholder="Pergunta do Exercício"
+    value={novaPergunta}
+    onChange={e => setNovaPergunta(e.target.value)}
+    className="input-field-tarefas"
+  />
+  {opcoes.map((op, i) => (
+    <div key={i} className="option-row-tarefas">
+      <input
+        type="text"
+        placeholder={`Opção ${i + 1}`}
+        value={op.texto_opcao}
+        onChange={e => atualizarOpcao(i, "texto_opcao", e.target.value)}
+        className="input-field-tarefas"
+      />
+      <div className="checkbox-container-tarefas">
+        <input
+          type="checkbox"
+          checked={op.correta}
+          onChange={e => atualizarOpcao(i, "correta", e.target.checked)}
+          className="checkbox-tarefas"
+        />
+        <span className="checkbox-label-tarefas">Correta</span>
+      </div>
+      {opcoes.length > 1 && <button onClick={() => removerOpcao(i)} className="button-remove-tarefas">❌</button>}
+    </div>
+  ))}
+  <div className="button-group-tarefas">
+    <button onClick={adicionarOpcao} className="button-secondary-tarefas">+ Opção</button>
+    <button onClick={handleCriarExercicio} className="button-primary-tarefas">Guardar Exercício</button>
+  </div>
+</div>
 
-            <form onSubmit={handleUpload}>
-              <input type="file" onChange={e => setFicheiro(e.target.files[0])} />
-              <select value={tipoFicheiro} onChange={e => setTipoFicheiro(e.target.value)}>
-                <option value="curso">Curso</option>
-                <option value="tarefa">Tarefa</option>
-              </select>
-              {tipoFicheiro === "tarefa" && (
-                <select value={tarefaFicheiro} onChange={e => setTarefaFicheiro(e.target.value)}>
-                  <option value="">Selecionar Tarefa</option>
-                  {tarefas.map(t => <option key={t.id} value={t.id}>{t.titulo}</option>)}
-                </select>
-              )}
-              <button type="submit">Enviar</button>
-            </form>
-
+    {/* Lista de exercícios */}
+    <div className="form-bloco-tarefas">
+      <h4 className="form-subtitle-tarefas">Ver Exercícios</h4>
+      <select
+        value={tarefaExercicios}
+        onChange={e => carregarExercicios(e.target.value)}
+        className="select-field-tarefas"
+      >
+        <option value="">Selecionar Tarefa</option>
+        {tarefas.map(t => (
+          <option key={t.id} value={t.id}>{t.titulo}</option>
+        ))}
+      </select>
+      <ul>
+        {exercicios.map(ex => (
+          <li key={ex.id} className="exercise-item-tarefas">
+            <strong>{ex.pergunta}</strong>
             <ul>
-              {ficheiros.map(f => (
-                <li key={f.id}>
-                  {f.tipo} - {f.nome_ficheiro}
-                  <div className="ficheiro-botoes">
-                    <a href={`http://localhost:3001/uploads/ficheiros/${f.nome_ficheiro}`} target="_blank" rel="noopener noreferrer">
-                      <button>Ver</button>
-                    </a>
-                    <button onClick={() => handleApagarFicheiro(f.id)}>Apagar</button>
-                  </div>
+              {ex.opcoes.map(op => (
+                <li key={op.id}>
+                  {op.correta ? "✅" : "⬜"} {op.texto_opcao}
                 </li>
               ))}
             </ul>
-          </section>
-        )}
+            <button onClick={() => apagarExercicio(ex.id)} className="button-delete-tarefas">Apagar</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+)}
+
+
+        {tab === "ficheiros" && (
+  <section className="card-ficheiros">
+    <h3 className="card-title-ficheiros">Ficheiros</h3>
+
+    <form onSubmit={handleUpload} className="form-ficheiros">
+      <input 
+        type="file" 
+        onChange={e => setFicheiro(e.target.files[0])} 
+        className="input-file-ficheiros"
+      />
+      <button type="submit" className="button-submit-ficheiros">Enviar</button>
+    </form>
+
+    <ul className="list-ficheiros">
+      {ficheiros.map(f => (
+        <li key={f.id} className="file-item-ficheiros">
+          <div className="file-info-ficheiros">
+            <span className="file-type-ficheiros">{f.tipo}</span> - <span className="file-name-ficheiros">{f.nome_ficheiro}</span>
+          </div>
+          <div className="file-buttons-ficheiros">
+            <a href={`http://localhost:3001/uploads/ficheiros/${f.nome_ficheiro}`} target="_blank" rel="noopener noreferrer">
+              <button className="button-view-ficheiros">Ver</button>
+            </a>
+            <button onClick={() => handleApagarFicheiro(f.id)} className="button-delete-ficheiros">Apagar</button>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </section>
+)}
+
 
         {tab === "alunos" && (
           <section className="card">
-            <h3>👥 Alunos Inscritos</h3>
+            <h3>Alunos Inscritos</h3>
             <ul>
               {alunos.map(aluno => (
                 <li key={aluno.utilizador_id}>
